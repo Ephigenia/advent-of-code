@@ -1,0 +1,20 @@
+{
+  "name": "@ephigenia/advent-of-code",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "tsconfig.js",
+  "scripts": {
+    "start": "ts-node $1"
+  },
+  "keywords": [],
+  "author": "Marcel Eichner <marcel.eichner@ephigenia.de> (https://www.marceleichner.de/)",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "18.11.10",
+    "ts-node": "10.9.1"
+  },
+  "dependencies": {
+    "chalk": "4.1.2"
+  }
+}
