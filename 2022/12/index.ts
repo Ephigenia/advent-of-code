@@ -63,19 +63,55 @@ class ElevationMap {
     return this.visited.indexOf(this.getIndex(x, y)) > -1;
   }
 
+  /**
+   * @returns normalized elevation, 0-25
+   */
+  public elevation(char: string): number {
+    const charCode = char.charCodeAt(0);
+    if (charCode < 97) return 0;
+    if (charCode > 122) return 25;
+    return 122 - charCode;
+  }
+
+  public colorForElevation(elevation: number): chalk.Chalk {
+    const ranges = [
+      chalk.bgRgb(255,255,255).black,
+      chalk.bgRgb(255,255,255).black,
+      chalk.bgRgb(100,100,100).black,
+      chalk.bgRgb(150,150,150).black,
+      chalk.bgRgb(180,180,180).black,
+      chalk.bgRgb(128,0,0).black,
+      chalk.bgRgb(139,69,19).black,
+      chalk.bgRgb(210,105,30).black,
+      chalk.bgRgb(218,165,32).black,
+      chalk.bgRgb(244,164,96).black,
+      chalk.bgRgb(107,142,35).black,
+      chalk.bgRgb(50,205,50).black,
+      chalk.bgRgb(143,188,143).black,
+      chalk.bgRgb(60,179,113).black,
+    ];
+    let color = ranges.find((color, index) => {
+      if (elevation / 25 * (ranges.length - 1) < index) return color;
+    });
+    if (!color) color = ranges[ranges.length - 1];
+    return color;
+  }
+
   public toString(): string {
     let str = '';
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
-        let color = chalk.gray;
+        let color: chalk.Chalk = chalk.gray;
         let char = this.get(x, y);
         if (this.player[0] === x && this.player[1] === y) {
           color = chalk.yellow.bold;
-          char = '●';
+          char = '𓀠';
         } else if (char === MAP_TARGET) {
           color = chalk.red.bold;
         } else if (this.isVisited(x, y)) {
           color = chalk.green;
+        } else {
+          color = this.colorForElevation(this.elevation(char));
         }
         str += color(char);
       }
@@ -152,6 +188,7 @@ class ElevationMap {
   }
 }
 
+// use FORCE_COLOR=0 to disable colors
 async function main(filename: string) {
   const inputFilename = resolve(__dirname, filename);
   const raw = (await readFile(inputFilename)).toString().trim();
@@ -171,4 +208,5 @@ async function main(filename: string) {
   }
 }
 
+// main('input.txt');
 main('input.txt');
