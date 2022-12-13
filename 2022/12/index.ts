@@ -171,5 +171,4 @@ async function main(filename: string) {
   }
 }
 
-main('inputTest.txt');
-// main("inputTest1.txt");
+main('input.txt');
