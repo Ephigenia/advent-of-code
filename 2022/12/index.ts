@@ -24,11 +24,12 @@ class ElevationMap {
       this.width = lines[0].length;
       this.map = Array.from(lines.join(''));
     }
-    this.player = this.getCoords(this.map.indexOf(MAP_START));
-    this.target = this.getCoords(this.map.indexOf(MAP_TARGET));
+    this.player = this.findFirstChar(MAP_START);
+    this.set(this.player[0], this.player[1], 'a');
+    this.target = this.findFirstChar(MAP_TARGET);
   }
 
-  private findFirstChar(char: string) {
+  private findFirstChar(char: string): [number, number] {
     const index = this.map.indexOf(char);
     if (index < -1) {
       throw new Error(`Unable to find char ${JSON.stringify(char)} anywhere in the map`);
@@ -50,19 +51,33 @@ class ElevationMap {
     return this.map[this.getIndex(x, y)];
   }
 
-  public isFinished() {
+  public set(x: number, y: number, char: string):void {
+    this.map[this.getIndex(x, y)] = char;
+  }
+
+  public isFinished(): boolean {
     return this.get(this.player[0], this.player[1]) === MAP_TARGET;
+  }
+
+  public isVisited(x: number, y: number):boolean {
+    return this.visited.indexOf(this.getIndex(x, y)) > -1;
   }
 
   public toString(): string {
     let str = '';
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
+        let color = chalk.gray;
+        let char = this.get(x, y);
         if (this.player[0] === x && this.player[1] === y) {
-          str += chalk.yellow.bold('●');
-        } else {
-          str += this.get(x, y);
+          color = chalk.yellow.bold;
+          char = '●';
+        } else if (char === MAP_TARGET) {
+          color = chalk.red.bold;
+        } else if (this.isVisited(x, y)) {
+          color = chalk.green;
         }
+        str += color(char);
       }
       str += '\n';
     }
