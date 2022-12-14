@@ -208,5 +208,5 @@ async function main(filename: string) {
   }
 }
 
+main('inputTest.txt');
 // main('input.txt');
-main('input.txt');
