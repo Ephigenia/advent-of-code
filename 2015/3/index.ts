@@ -94,6 +94,7 @@ async function main(filename: string) {
   const inputFilename = resolve(__dirname, filename);
   const raw = Array.from((await readFile(inputFilename)).toString().trim());
 
+  // Part 2
   const world = new World();
   const santa = world.createPlayer('santa');
   const robosanta = world.createPlayer('robo');
@@ -104,12 +105,6 @@ async function main(filename: string) {
       robosanta.move(directionString as DIRECTION_STRING);
     }
   });
-
-  console.log('total houses visited', world.visited.size);
-  console.log(world.borders);
-  // console.log(world.visited.size);
-  console.log(world.render());
-
   const onePresentVisits = [...world.visited].filter(([key, val]) => val >= 1);
   console.log('number of houses with at least one present: %d', onePresentVisits.length);
 }
