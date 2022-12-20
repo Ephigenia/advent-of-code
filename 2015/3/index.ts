@@ -8,7 +8,6 @@ enum DIRECTION {
 
 class Player {
   public pos: [number, number] = [0, 0];
-  public moves: DIRECTION_STRING[] = [];
 
   constructor(public world: World, public name: string) {}
 
@@ -27,12 +26,11 @@ class Player {
         this.pos[0]++;
         break;
     };
-    this.moves.push(direction);
     this.world.visit(this.pos[0], this.pos[1]);
   }
 
   toString() {
-    return `${this.name} ${this.pos[0]}x${this.pos[1]}`;
+    return `Player ${this.name} ${this.pos[0]}x${this.pos[1]}`;
   }
 }
 
@@ -41,7 +39,7 @@ class World {
                    // x1      y1      x2      y2
   public borders: [number, number, number, number] = [0,0,0,0];
 
-  players = new Set<Player>();
+  public players = new Set<Player>();
 
   createPlayer(name: string) {
     const player = new Player(this, name);
@@ -51,7 +49,7 @@ class World {
   }
 
   visit(x: number, y: number): void {
-    const key = [x,y].join(',');
+    const key = [x, y].join(',');
     const val = this.getVisitsAt(x, y) + 1;
     this.visited.set(key, val);
     this.extendBorders(x, y);
