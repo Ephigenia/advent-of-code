@@ -33,6 +33,12 @@ async function main(filename: string) {
   console.log('%d strings are nice!\n', niceStrings.length);
 
   // Day2
+  const niceStrings2 = lines.filter(line => {
+    const overlapping = line.match(/.*(.{2}).*\1.*/g);
+    const pairs = line.match(/.*(.).\1.*/g);
+    return overlapping && pairs;
+  });
+  console.log('%d strings are nice!\n', niceStrings2.length);
 }
 
 main('input.txt');
