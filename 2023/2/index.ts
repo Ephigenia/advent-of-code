@@ -33,7 +33,7 @@ function findGameMaxRGB(draws: Array<Draw>): Draw {
   };
 }
 
-function parseInput(rawInput: string): Game[] {
+function parseInput(rawInput: string) {
   const games = rawInput
     .split('\n')
     .map(v => v.trim().substring(v.indexOf(':') + 2))
@@ -44,12 +44,11 @@ function parseInput(rawInput: string): Game[] {
   return games;
 }
 
-
 async function main(filename: string) {
   const inputFilename = resolve(filename);
   const rawInput = (await readFile(inputFilename)).toString().trim();
 
-  const games = parseInput(rawInput);
+  const games:Game[] = parseInput(rawInput);
 
   // solution 1+2 combined
   const possiblePowers: Array<number> = [];
