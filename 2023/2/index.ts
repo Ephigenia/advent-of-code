@@ -36,7 +36,8 @@ function findGameMaxRGB(draws: Array<Draw>): Draw {
 function parseInput(rawInput: string) {
   const games = rawInput
     .split('\n')
-    .map(v => v.trim().substring(v.indexOf(':') + 2))
+    .map(v => v.trim())
+    .map(v => v.substring(v.indexOf(':') + 2))
     .map((str, i) => ({
       id: i + 1,
       draws: parseDraws(str)
