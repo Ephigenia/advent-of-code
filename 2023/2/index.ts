@@ -1,17 +1,10 @@
 import { readFile } from "fs/promises";
 import { resolve } from "path";
 
-// games
-//    n
-//    draws[] = [red, green, blue]
-
-// red green blue
-// game number
-// number of stones in each color per game
-
 interface Draw { r: number, g: number, b: number;};
 interface Game { id: number, draws: Array<Draw>; };
 
+// parse a single draw in the format "4 red, 5 green, 6 blue"
 function parseDraw(draw: string): Draw {
   const c = { r: 0, g: 0, b: 0 };
   draw.split(/,\s*/).map(numberAndColor => {
@@ -23,11 +16,13 @@ function parseDraw(draw: string): Draw {
   return c;
 }
 
+// parse a string containing multiple draws separated by semicolons
 function parseDraws(drawString: string): Draw[] {
   return drawString.split(/;\s*/).map(parseDraw);
 }
 
-function findGameMaxRGB(draws: Array<Draw>) {
+// find the maximum of r, g, b and return a draw containing the maximums
+function findGameMaxRGB(draws: Array<Draw>): Draw {
   const r = draws.map(d => d.r);
   const g = draws.map(d => d.g);
   const b = draws.map(d => d.b);
@@ -38,18 +33,25 @@ function findGameMaxRGB(draws: Array<Draw>) {
   };
 }
 
-async function main(filename: string) {
-  const inputFilename = resolve(filename);
-  const rawInput = (await readFile(inputFilename)).toString().trim();
-
-  const games: Game[] = rawInput
+function parseInput(rawInput: string): Game[] {
+  const games = rawInput
     .split('\n')
     .map(v => v.trim().substring(v.indexOf(':') + 2))
     .map((str, i) => ({
       id: i + 1,
       draws: parseDraws(str)
     }));
+  return games;
+}
 
+
+async function main(filename: string) {
+  const inputFilename = resolve(filename);
+  const rawInput = (await readFile(inputFilename)).toString().trim();
+
+  const games = parseInput(rawInput);
+
+  // solution 1+2 combined
   const possiblePowers: Array<number> = [];
   const bagRGB = { r: 12, g: 13, b: 14 };
   const possibleGames = games.filter((game, i) => {
