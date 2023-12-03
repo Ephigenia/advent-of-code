@@ -50,6 +50,7 @@ async function main(filename: string) {
       draws: parseDraws(str)
     }));
 
+  const possiblePowers: Array<number> = [];
   const bagRGB = { r: 12, g: 13, b: 14 };
   const possibleGames = games.filter((game, i) => {
     const maxRGB = findGameMaxRGB(game.draws);
@@ -59,16 +60,23 @@ async function main(filename: string) {
       g: maxRGB.g <= bagRGB.g,
       b: maxRGB.b <= bagRGB.b
     }
-    const isPossibleC = isPossible.r && isPossible.g && isPossible.b;
-    console.log('Game %d is %s possible', game.id, isPossibleC ? '' : 'not');
 
+    const power = maxRGB.r * maxRGB.g * maxRGB.b;
+
+    const isPossibleC = isPossible.r && isPossible.g && isPossible.b;
+    console.log('Game %d is %s possible power %d', game.id, isPossibleC ? 'yes' : 'NOT', power);
+
+
+    possiblePowers.push(power);
     return isPossibleC;
   });
 
   const sum = possibleGames.reduce((acc, game) => game.id + acc, 0);
+  const sumPowers = possiblePowers.reduce((a, c) => a+c, 0);
 
   console.log('number of possible games', possibleGames.length);
   console.log('sum of ids', sum);
+  console.log('sum of powers', sumPowers);
 }
 
 const INPUT_FILENAME = process.argv.pop() || 'input.txt';
