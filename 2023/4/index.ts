@@ -13,10 +13,10 @@ class Card {
   constructor(private input: string) {
     const NUMBER_SEPERATOR = /\s+/;
     const INDEX_NUMBER_SEPERATOR = ":";
-    const WINNING_NUMBERS_SEPERATOR = " |";
+    const WINNING_NUMBERS_SEPERATOR = "|";
     this.index = parseInt(input.substring(5, input.indexOf(INDEX_NUMBER_SEPERATOR)), 10);
-    this.numbers = input.substring(input.indexOf(INDEX_NUMBER_SEPERATOR) + 2, input.indexOf(WINNING_NUMBERS_SEPERATOR)).split(NUMBER_SEPERATOR).map(n => parseInt(n, 10));
-    this.winningNumbers = input.substring(input.indexOf(WINNING_NUMBERS_SEPERATOR) + 3).split(NUMBER_SEPERATOR).map(n => parseInt(n, 10));
+    this.numbers = input.substring(input.indexOf(INDEX_NUMBER_SEPERATOR) + 1, input.indexOf(WINNING_NUMBERS_SEPERATOR)).trim().split(NUMBER_SEPERATOR).map(n => parseInt(n, 10));
+    this.winningNumbers = input.substring(input.indexOf(WINNING_NUMBERS_SEPERATOR) + 3).trim().split(NUMBER_SEPERATOR).map(n => parseInt(n, 10));
   }
 
   public toString() {
