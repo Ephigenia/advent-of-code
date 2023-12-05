@@ -16,7 +16,7 @@ class Card {
     const WINNING_NUMBERS_SEPERATOR = "|";
     this.index = parseInt(input.substring(5, input.indexOf(INDEX_NUMBER_SEPERATOR)), 10);
     this.numbers = input.substring(input.indexOf(INDEX_NUMBER_SEPERATOR) + 1, input.indexOf(WINNING_NUMBERS_SEPERATOR)).trim().split(NUMBER_SEPERATOR).map(n => parseInt(n, 10));
-    this.winningNumbers = input.substring(input.indexOf(WINNING_NUMBERS_SEPERATOR) + 3).trim().split(NUMBER_SEPERATOR).map(n => parseInt(n, 10));
+    this.winningNumbers = input.substring(input.indexOf(WINNING_NUMBERS_SEPERATOR) + 1).trim().split(NUMBER_SEPERATOR).map(n => parseInt(n, 10));
   }
 
   public toString() {
