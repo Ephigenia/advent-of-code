@@ -11,6 +11,30 @@ interface Race {
   successfulVariants: number;
 }
 
+function calculateVariants(race: Race) {
+  const table = [...Array(race.duration).keys()].map((speed) => {
+    const travelTime = race.duration - speed;
+    const distance = travelTime * speed;
+    const success = distance > race.distance;
+    if (success) {
+      race.successfulVariants++;
+    }
+    return { speed, travelTime, distance, success };
+  });
+  return table;
+}
+
+function calculateVariants2(race: Race) {
+  const table = [...Array(race.duration).keys()].map((speed) => {
+    const travelTime = race.duration - speed;
+    const distance = travelTime * speed;
+    const success = distance > race.distance;
+    return success;
+  });
+  return table;
+}
+
+
 async function main(filename: string) {
   const inputFilename = resolve(filename);
   const rawInput = (await readFile(inputFilename)).toString().trim();
@@ -23,23 +47,19 @@ async function main(filename: string) {
     successfulVariants: 0,
   }));
 
-  races.map((race) => {
-    const table = [...Array(race.duration).keys()].map((j) => {
-      const waitTime = j;
-      const speed = j;
-      const travelTime = race.duration - waitTime;
-      const distance = travelTime * speed;
-      const success = distance > race.distance;
-      if (success) {
-        race.successfulVariants++;
-      }
-      return { waitTime, speed, travelTime, distance, success};
-    });
-    console.table(table);
-  });
+  const variants = races.map(calculateVariants);
+  // t.forEach(t => console.table(t));
 
   console.log(races);
   console.log('multi-variants', races.reduce((acc, race) => acc * race.successfulVariants, 1));
+  console.log('');
+
+  // task2
+  const [duration, distance] = input.map(line => line.substring(10).replace(/\s+/g, '')).map(v => parseInt(v, 10));
+  const newRace = { distance, duration, successfulVariants: 0 };
+  const variants2 = calculateVariants2(newRace);
+  console.log('Final Race', newRace);
+  console.log('multi-variants', variants2.filter(v => v).length);
 }
 
 const INPUT_FILENAME = process.argv.pop() || 'input.txt';
