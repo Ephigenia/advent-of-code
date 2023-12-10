@@ -20,7 +20,7 @@ async function main(filename: string) {
   const rawInput = (await readFile(inputFilename)).toString().trim();
   const input = parseInput(rawInput)
 
-  input.forEach((line) => {
+  input.splice(1, 0).forEach((line) => {
     const sequence = line.split(/\s+/).map(v => parseInt(v, 10))
     console.log(sequence)
 
@@ -31,6 +31,11 @@ async function main(filename: string) {
       steps.push(findDifference(steps[steps.length - 1]));
       sum = sumArr(steps[steps.length - 1]);
     } while (sum !== 0);
+
+    // reverse extrapolate
+    for (let i = steps.length - 1; i > 0; i--) {
+      console.log(steps[i]);
+    }
 
     console.log(steps);
   })
