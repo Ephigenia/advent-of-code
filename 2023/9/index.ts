@@ -49,6 +49,9 @@ async function main(filename: string) {
       }
     }
 
+    console.log(steps.map((line, i) => ' '.repeat(i) + line.join(' ')).join('\n'));
+    console.log();
+
     // extract the last value of the first step of each
     const lastStepValue = arrLastItem(steps[0]);
     lastSteps.push(lastStepValue);
