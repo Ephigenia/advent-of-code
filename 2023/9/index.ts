@@ -52,10 +52,39 @@ async function main(filename: string) {
 
     // debug output
     // console.log(steps.map((line, i) => ' '.repeat(i) + line.join(' ')).join('\n'));
-    // console.log();
+    answer += arrLastItem(steps[0]);
     lastSteps.push(arrLastItem(steps[0]));
   });
+  // should be 1731106378
+  console.log(answer);
   console.log(sumArr(lastSteps));
+
+  // second part
+  // const firstSteps: number[] = [];
+  // input.forEach((line) => {
+  //   const sequence = line.split(/\s+/).map(v => parseInt(v, 10))
+  //   let sum = 0;
+  //   let steps:number[][] = [sequence];
+
+  //   do {
+  //     steps.push(findDifference(steps[steps.length - 1]));
+  //     sum = sumArr(steps[steps.length - 1]);
+  //   } while (sum !== 0);
+  //   for (let i = steps.length - 1; i >= 0; i--) {
+  //     if (i === steps.length - 1) {
+  //       steps[i].unshift(0);
+  //     } else if (i === steps.length - 2) {
+  //       steps[i].unshift(steps[i][0]);
+  //     } else {
+  //       steps[i].unshift(steps[i][0] - steps[i+1][0]);
+  //     }
+  //   }
+
+  //   console.log(steps.map((line, i) => ' '.repeat(i) + line.join(' ')).join('\n'));
+  //   console.log();
+  //   firstSteps.push(steps[0][0]);
+  // })
+  // console.log(sumArr(firstSteps));
 }
 
 const INPUT_FILENAME = process.argv.pop() || 'input.txt';
