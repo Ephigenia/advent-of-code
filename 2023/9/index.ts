@@ -25,6 +25,7 @@ async function main(filename: string) {
   const input = parseInput(rawInput)
 
   const lastSteps:number[] = [];
+  let answer = 0;
   input.forEach((line) => {
     const sequence = line.split(/\s+/).map(v => parseInt(v, 10))
 
@@ -49,17 +50,11 @@ async function main(filename: string) {
       }
     }
 
-    console.log(steps.map((line, i) => ' '.repeat(i) + line.join(' ')).join('\n'));
-    console.log();
-
-    // extract the last value of the first step of each
-    const lastStepValue = arrLastItem(steps[0]);
-    lastSteps.push(lastStepValue);
-    // 1731106418 too high
+    // debug output
+    // console.log(steps.map((line, i) => ' '.repeat(i) + line.join(' ')).join('\n'));
+    // console.log();
+    lastSteps.push(arrLastItem(steps[0]));
   });
-
-  console.log(lastSteps);
-
   console.log(sumArr(lastSteps));
 }
 
