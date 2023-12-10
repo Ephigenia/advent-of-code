@@ -55,7 +55,10 @@ async function main(filename: string) {
     // extract the last value of the first step of each
     const lastStepValue = arrLastItem(steps[0]);
     lastSteps.push(lastStepValue);
+    // 1731106418 too high
   });
+
+  console.log(lastSteps);
 
   console.log(sumArr(lastSteps));
 }
