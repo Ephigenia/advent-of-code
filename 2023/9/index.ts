@@ -15,6 +15,10 @@ function sumArr(numArr: number[]) {
   return numArr.reduce((acc, cur) => acc + cur, 0);
 }
 
+function sumArrAbs(numArr: number[]) {
+  return numArr.reduce((acc, cur) => acc + Math.abs(cur), 0);
+}
+
 function arrLastItem(arr: number[]): number {
   return arr[arr.length - 1];
 }
@@ -34,7 +38,7 @@ async function main(filename: string) {
 
     do {
       steps.push(findDifference(steps[steps.length - 1]));
-      sum = sumArr(steps[steps.length - 1]);
+      sum = sumArrAbs(steps[steps.length - 1]);
     } while (sum !== 0);
 
     // reverse extrapolate each step using the difference from the next step
@@ -50,11 +54,13 @@ async function main(filename: string) {
       }
     }
 
-    // debug output
     // console.log(steps.map((line, i) => ' '.repeat(i) + line.join(' ')).join('\n'));
-    // console.log();
-    lastSteps.push(arrLastItem(steps[0]));
+
+    // extract the last value of the first step of each
+    const lastStepValue = arrLastItem(steps[0]);
+    lastSteps.push(lastStepValue);
   });
+
   console.log(sumArr(lastSteps));
 }
 
