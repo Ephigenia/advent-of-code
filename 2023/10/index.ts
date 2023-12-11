@@ -29,7 +29,8 @@ class Surface {
       .replace(/7/g, '┐')
       .replace(/J/g, '┘')
       .replace(/\./g, ' ')
-      .replace(/-/g, '─');
+      .replace(/-/g, '─')
+      .replace(/\|/g, '│');
   }
 }
 
