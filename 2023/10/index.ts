@@ -64,15 +64,7 @@ class Surface {
   }
 
   public toString(): string {
-    let r = '';
-    for (let y = 0; y < this.height + 1; y++) {
-      for (let x = 0; x < this.width + 1; x++) {
-        let symbol = this.get(x, y);
-        r += symbol;
-      }
-      r += '\n';
-    }
-    return r
+    return this.shapes.map(line => line.join('')).join('\n')
       .replace(/F/g, '┌').replace(/L/g, '└').replace(/7/g, '┐')
       .replace(/J/g, '┘').replace(/\./g, ' ').replace(/-/g, '─')
       .replace(/\|/g, '│');
