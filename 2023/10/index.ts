@@ -2,8 +2,6 @@ import chalk from "chalk";
 import { readFile } from "fs/promises";
 import { resolve } from "path";
 
-interface Point { x: number, y: number };
-
 class Surface {
   public shapes: string[][] = [[]];
   public width = 0;
@@ -92,14 +90,35 @@ class Surface {
         const [x, y] = node;
         this.distanceMap[x][y] = distance;
         const symbol = this.get(x, y);
-        if (symbol == '.') { continue; }
-        if (symbol == '-') { addNode(this, x, y, 'W');  addNode(this, x, y, 'E'); continue; }
-        if (symbol == '|') { addNode(this, x, y, 'N'); addNode(this, x, y, 'S'); continue; }
-        if (symbol == 'L') { addNode(this, x, y, 'N'); addNode(this, x, y, 'E'); continue; }
-        if (symbol == 'J') { addNode(this, x, y, 'N'); addNode(this, x, y, 'W'); continue; }
-        if (symbol == 'F') { addNode(this, x, y, 'S'); addNode(this, x, y, 'E'); continue; }
-        if (symbol == '7') { addNode(this, x, y, 'S'); addNode(this, x, y, 'W'); continue; }
-        throw new Error('unknown symbol "' + symbol + '" at ' +  x + ',' + y);
+        switch (symbol) {
+          case '.': break;
+          case '-':
+            addNode(this, x, y, 'W');
+            addNode(this, x, y, 'E');
+            break;
+          case '|':
+            addNode(this, x, y, 'N');
+            addNode(this, x, y, 'S');
+            break;
+          case 'L':
+            addNode(this, x, y, 'N');
+            addNode(this, x, y, 'E');
+            break;
+          case 'J':
+            addNode(this, x, y, 'N');
+            addNode(this, x, y, 'W');
+            break;
+          case 'F':
+            addNode(this, x, y, 'S');
+            addNode(this, x, y, 'E');
+            break;
+          case '7':
+            addNode(this, x, y, 'S');
+            addNode(this, x, y, 'W');
+            break;
+          default:
+            throw new Error('unknown symbol "' + symbol + '" at ' +  x + ',' + y);
+        }
       }
     }
 
@@ -118,6 +137,7 @@ class Surface {
 
 
 async function main(filename: string) {
+  console.time('main');
   const inputFilename = resolve(filename);
   const rawInput = (await readFile(inputFilename)).toString().trim();
 
@@ -126,11 +146,12 @@ async function main(filename: string) {
 
   const startSymbol = surface.getStartSymbol(start[0], start[1]);
   surface.set(start[0], start[1], startSymbol);
-
   const distance = surface.search(start[0], start[1]);
   console.log('startSymbol', startSymbol);
-  console.log(surface.toString());
-  console.log(distance);
+  // console.log(surface.toString());
+  console.log('distance', distance);
+
+  console.timeEnd('main');
 }
 
 const INPUT_FILENAME = process.argv.pop() || 'input.txt';
