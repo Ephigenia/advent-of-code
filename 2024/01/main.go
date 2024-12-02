@@ -1,7 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+
+	"github.com/davecgh/go-spew/spew"
+)
 
 func main() {
-	fmt.Printf("Hello")
+	pwd, _ := os.Getwd()
+	spew.Dump(pwd)
+	dat, err := os.ReadFile(pwd + "/input.txt")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Print(string(dat))
 }
