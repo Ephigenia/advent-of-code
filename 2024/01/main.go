@@ -26,7 +26,7 @@ func main() {
 		lib.ExitWithError(err)
 	}
 
-	processInputPartOne(rawInput)
+	processInputPartTwo(rawInput)
 }
 
 func processInputPartOne(input string) {
@@ -51,6 +51,28 @@ func processInputPartOne(input string) {
 		dist := math.Abs(float64(minLeft - minRight))
 		fmt.Printf("#%d minLeft: %d, minRight: %d, dist: %f\n", i, minLeft, minRight, dist)
 		sum += int(dist)
+	}
+	spew.Dump(sum)
+}
+
+func processInputPartTwo(input string) {
+	lines := strings.Split(input, "\n")
+	right := make([]int, len(lines))
+	left := make([]int, len(lines))
+
+	for i, line := range lines {
+		values := lib.ArrStrToInt(strings.Split(line, "   "))
+		left[i] = values[0]
+		right[i] = values[1]
+	}
+
+	// find min values of remaining array and calculate distance
+	sum := 0
+	for i, v := range left {
+
+		occurencesRight := lib.ArrIntCountOccurences(right, v)
+		sum += v * occurencesRight
+		fmt.Printf("#%d value: %d, occurenceRight: %d\n", i, v, occurencesRight)
 	}
 	spew.Dump(sum)
 }

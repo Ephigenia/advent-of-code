@@ -63,3 +63,13 @@ func ArrStrToInt(input []string) []int {
 	}
 	return output
 }
+
+func ArrIntCountOccurences(input []int, needle int) int {
+	count := 0
+	for _, v := range input {
+		if v == needle {
+			count++
+		}
+	}
+	return count
+}
