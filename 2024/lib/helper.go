@@ -2,6 +2,7 @@ package lib
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -48,6 +49,35 @@ func ArrMax(input []int) (int, index int) {
 // remove on item of an array
 func ArrIntPopIndex(input []int, index int) []int {
 	return append(input[:index], input[index+1:]...)
+}
+
+func ArrIntSum(input []int) int {
+	return ArrIntReduce(input, func(v int, i int, acc int) int {
+		return acc + v
+	})
+}
+
+func ArrIntReduce(input []int, reducer func(v int, i int, acc int) int) int {
+	acc := 0
+	for i, v := range input {
+		acc = reducer(v, i, acc)
+	}
+	return acc
+}
+
+func ArrIntMap(input []int, mapper func(v int, i int) int) []int {
+	acc := make([]int, len(input))
+	for i, v := range input {
+		acc[i] = mapper(v, i)
+	}
+	return acc
+}
+
+// run Math.asb on all values in an array
+func ArrIntAbs(input []int) []int {
+	return ArrIntMap(input, func(v int, i int) int {
+		return int(math.Abs(float64(v)))
+	})
 }
 
 func ArrStrToInt(input []string) []int {
