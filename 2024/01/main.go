@@ -2,6 +2,8 @@ package main
 
 import (
 	"errors"
+	"fmt"
+	"math"
 	"os"
 	"path"
 	"strings"
@@ -19,31 +21,36 @@ func main() {
 	}
 	filename := path.Join(pwd, args[1])
 
-	rawInput, err := ReadInputFile(filename)
+	rawInput, err := lib.ReadInputFile(filename)
 	if err != nil {
 		lib.ExitWithError(err)
 	}
 
-	processInput(rawInput)
+	processInputPartOne(rawInput)
 }
 
-func ReadInputFile(filename string) (string, error) {
-	// read the whole file
-	dat, err := os.ReadFile(filename)
-	if err != nil {
-		return "", nil
-	}
-	return strings.TrimRight(string(dat), "\n"), nil
-}
-
-func processInput(input string) {
+func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
 	right := make([]int, len(lines))
 	left := make([]int, len(lines))
+
 	for i, line := range lines {
 		values := lib.ArrStrToInt(strings.Split(line, "   "))
 		left[i] = values[0]
 		right[i] = values[1]
 	}
-	spew.Dump(left, right)
+
+	// find min values of remaining array and calculate distance
+	sum := 0
+	for i := range left {
+		minLeft, minLeftIndex := lib.ArrMin(left)
+		minRight, minRightIndex := lib.ArrMin(right)
+		left = lib.ArrIntPopIndex(left, minLeftIndex)
+		right = lib.ArrIntPopIndex(right, minRightIndex)
+
+		dist := math.Abs(float64(minLeft - minRight))
+		fmt.Printf("#%d minLeft: %d, minRight: %d, dist: %f\n", i, minLeft, minRight, dist)
+		sum += int(dist)
+	}
+	spew.Dump(sum)
 }
