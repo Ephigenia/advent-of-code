@@ -6,6 +6,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/Ephigenia/advent-of-code/2024/lib"
 	"github.com/davecgh/go-spew/spew"
 )
 
@@ -14,13 +15,13 @@ func main() {
 	args := os.Args
 
 	if len(args) < 2 {
-		ExitWithError(errors.New("please provide a filename"))
+		lib.ExitWithError(errors.New("please provide a filename"))
 	}
 	filename := path.Join(pwd, args[1])
 
 	rawInput, err := ReadInputFile(filename)
 	if err != nil {
-		ExitWithError(err)
+		lib.ExitWithError(err)
 	}
 
 	processInput(rawInput)
@@ -37,8 +38,12 @@ func ReadInputFile(filename string) (string, error) {
 
 func processInput(input string) {
 	lines := strings.Split(input, "\n")
-	for _, line := range lines {
-		values := ArrStrToInt(strings.Split(line, "   "))
-		spew.Dump(values)
+	right := make([]int, len(lines))
+	left := make([]int, len(lines))
+	for i, line := range lines {
+		values := lib.ArrStrToInt(strings.Split(line, "   "))
+		left[i] = values[0]
+		right[i] = values[1]
 	}
+	spew.Dump(left, right)
 }
