@@ -57,6 +57,15 @@ func ArrIntSum(input []int) int {
 	})
 }
 
+func ArrIntFind(input []int, needle int) bool {
+	for _, v := range input {
+		if v == needle {
+			return true
+		}
+	}
+	return false
+}
+
 func ArrIntReduce(input []int, reducer func(v int, i int, acc int) int) int {
 	acc := 0
 	for i, v := range input {

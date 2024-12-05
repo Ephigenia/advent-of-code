@@ -29,7 +29,7 @@ func main() {
 
 func RedNoseFactor(one, two int) int {
 	// return int(math.Abs(float64(one - two)))
-	return one - two
+	return two - one
 }
 
 func RedNoseFactorIsSafe(factor int) bool {
@@ -39,17 +39,22 @@ func RedNoseFactorIsSafe(factor int) bool {
 func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
 
+	numOfSafeReports := 0
 	for i, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
 
+		// calculate deltas between the level values
 		deltas := lib.ArrIntMap(levels, func(v int, i int) int {
 			if i == len(levels)-1 {
 				return 0
 			}
 			return RedNoseFactor(v, levels[i+1])
-		})
+		})[0 : len(levels)-1]
+		// find maximum deviation in the deltas
 		deltasAbs := lib.ArrIntAbs(deltas)
+		maxDelta, _ := lib.ArrMax(deltasAbs)
 
+		// find out if all values are increasing or decreasing
 		deltaSigns := lib.ArrIntMap(deltas, func(v int, i int) int {
 			if v < 0 {
 				return -1
@@ -57,13 +62,26 @@ func processInputPartOne(input string) {
 			return 1
 		})
 		deltaSignsSum := lib.ArrIntSum(deltaSigns)
+		isSameDeltaSign := deltaSignsSum == len(deltas) || deltaSignsSum == -len(deltas)
 
-		max, _ := lib.ArrMax(deltas)
-		isSafe := deltaSignsSum == len(deltas)
-		if max > 3 {
-			isSafe = false
+		// increments of 0 are invalid
+		containsZeroDelta := lib.ArrIntFind(deltas, 0)
+
+		isSafe := isSameDeltaSign && RedNoseFactorIsSafe(maxDelta) && !containsZeroDelta
+		if isSafe {
+			numOfSafeReports++
 		}
 
-		fmt.Printf("#%d levels: %v, factors %v (%v) isSafe: %t\n", i, levels, deltas, deltasAbs, isSafe)
+		fmt.Printf(
+			"#%d levels: %v, deltas %v (absDelta %v, max: %d) isSafe: %t\n",
+			i,
+			levels,
+			deltas,
+			deltasAbs,
+			maxDelta,
+			isSafe,
+		)
 	}
+
+	fmt.Printf("Numer of safe reports: %d\n", numOfSafeReports)
 }
