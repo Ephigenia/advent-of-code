@@ -2,12 +2,12 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path"
 	"strings"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -28,5 +28,10 @@ func main() {
 }
 
 func processInputPartOne(input string) {
-	spew.Dump(strings.Split(input, "\n"))
+	lines := strings.Split(input, "\n")
+
+	for i, line := range lines {
+		levels := lib.ArrStrToInt(strings.Split(line, " "))
+		fmt.Printf("#%d levels: %v\n", i, levels)
+	}
 }
