@@ -42,7 +42,7 @@ func isValidDelta(delta int, firstSign int) (bool, error) {
 	return true, nil
 }
 
-func processLevels(levels []int, allowedInvalids int) bool {
+func processLevels(levels []int, maxErrors int) bool {
 	deltas := lib.ArrIntDeltas(levels)
 
 	firstSign := 1
@@ -56,7 +56,8 @@ func processLevels(levels []int, allowedInvalids int) bool {
 		if err != nil {
 			errorCount++
 		}
-		if errorCount > allowedInvalids {
+		if errorCount > maxErrors {
+			fmt.Printf("to many errors %v", levels)
 			return false
 		}
 	}
@@ -83,7 +84,7 @@ func processInputPartTwo(input string) {
 	sum := 0
 	for _, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
-		result := processLevels(levels, 2)
+		result := processLevels(levels, 1)
 		fmt.Printf("levels: %v, result: %t\n", levels, result)
 		if result {
 			sum++
