@@ -41,7 +41,7 @@ func isSafeLevel(level int, nextLevel int) bool {
 	return true
 }
 
-func processLevels(levels []int) bool {
+func processLevels(levels []int, allowedInvalids int) bool {
 	deltas := lib.ArrIntDeltas(levels)
 	firstSign := 1
 	if deltas[0] < 0 {
@@ -60,6 +60,7 @@ func processLevels(levels []int) bool {
 			fmt.Printf("   #%d sign change\n", i)
 			return false
 		}
+
 		if deltaAbs > 3 {
 			fmt.Printf("   #%d invalid delta %d\n", i, deltaAbs)
 			return false
@@ -70,63 +71,18 @@ func processLevels(levels []int) bool {
 	return true
 }
 
-func processInputPartOne2(input string) {
+func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
 	sum := 0
 	for _, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
-		result := processLevels(levels)
+		result := processLevels(levels, 0)
 		fmt.Printf("levels: %v, result: %t\n", levels, result)
 		if result {
 			sum++
 		}
 	}
 	fmt.Printf("Number of safe reports: %d\n", sum)
-}
-
-func processInputPartOne(input string) {
-	lines := strings.Split(input, "\n")
-
-	numOfSafeReports := 0
-	for i, line := range lines {
-		levels := lib.ArrStrToInt(strings.Split(line, " "))
-
-		// calculate deltas between the level values
-		deltas := lib.ArrIntDeltas(levels)
-		// find maximum deviation in the deltas
-		deltasAbs := lib.ArrIntAbs(deltas)
-		maxDelta, _ := lib.ArrMax(deltasAbs)
-
-		// find out if all values are increasing or decreasing
-		deltaSigns := lib.ArrIntMap(deltas, func(v int, i int) int {
-			if v < 0 {
-				return -1
-			}
-			return 1
-		})
-		deltaSignsSum := lib.ArrIntSum(deltaSigns)
-		isSameDeltaSign := deltaSignsSum == len(deltas) || deltaSignsSum == -len(deltas)
-
-		// increments of 0 are invalid
-		containsZeroDelta := lib.ArrIntFind(deltas, 0)
-
-		isSafe := isSameDeltaSign && RedNoseFactorIsSafe(maxDelta) && !containsZeroDelta
-		if isSafe {
-			numOfSafeReports++
-		}
-
-		fmt.Printf(
-			"#%d levels: %v, deltas %v (absDelta %v, max: %d) isSafe: %t\n",
-			i,
-			levels,
-			deltas,
-			deltasAbs,
-			maxDelta,
-			isSafe,
-		)
-	}
-
-	fmt.Printf("Numer of safe reports: %d\n", numOfSafeReports)
 }
 
 // func processInputPartTwo(input string) {
