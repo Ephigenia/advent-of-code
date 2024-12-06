@@ -43,7 +43,10 @@ func isSafeLevel(level int, nextLevel int) bool {
 
 func processLevels(levels []int) bool {
 	deltas := lib.ArrIntDeltas(levels)
-	firstSign := deltas[0]
+	firstSign := 1
+	if deltas[0] < 0 {
+		firstSign = -1
+	}
 
 	for i, delta := range deltas {
 		if delta == 0 { // no delta
@@ -52,7 +55,8 @@ func processLevels(levels []int) bool {
 		}
 
 		deltaAbs := int(math.Abs(float64(delta)))
-		if delta > 0 && firstSign != 1 { // change of positive to negative
+		if delta > 0 && firstSign != 1 ||
+			delta < 0 && firstSign != -1 { // change of positive to negative
 			fmt.Printf("   #%d sign change\n", i)
 			return false
 		}
