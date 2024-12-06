@@ -42,7 +42,7 @@ func isValidDelta(delta int, firstSign int) (bool, error) {
 	return true, nil
 }
 
-func processLevels(levels []int, maxErrors int) (bool, int) {
+func processLevels(levels []int, maxInvalidDeltas int) (bool, int) {
 	deltas := lib.ArrIntDeltas(levels)
 
 	firstSign := 1
@@ -53,10 +53,10 @@ func processLevels(levels []int, maxErrors int) (bool, int) {
 	errorCount := 0
 	for _, delta := range deltas {
 		_, err := isValidDelta(delta, firstSign)
-		if err != nil && err.Error() != "to large delta" {
+		if err != nil {
 			errorCount++
 		}
-		if errorCount > maxErrors {
+		if errorCount > 0 && errorCount >= maxInvalidDeltas {
 			return false, errorCount
 		}
 	}
