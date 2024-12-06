@@ -25,7 +25,7 @@ func main() {
 		lib.ExitWithError(err)
 	}
 
-	processInputPartOne2(rawInput)
+	processInputPartOne(rawInput)
 	// processInputPartTwo(rawInput)
 }
 
