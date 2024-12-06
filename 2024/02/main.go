@@ -83,7 +83,7 @@ func processInputPartTwo(input string) {
 	sum := 0
 	for index, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
-		result, errorCount := processLevels(levels, 1)
+		result, errorCount := processLevels(levels, 2)
 		fmt.Printf("#%d %t %v (%d error(s))\n", index, result, levels, errorCount)
 		if result {
 			sum++
