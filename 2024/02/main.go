@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math"
 	"os"
 	"path"
 	"strings"
@@ -24,11 +25,59 @@ func main() {
 		lib.ExitWithError(err)
 	}
 
-	processInputPartOne(rawInput)
+	processInputPartOne2(rawInput)
+	// processInputPartTwo(rawInput)
 }
 
 func RedNoseFactorIsSafe(factor int) bool {
 	return factor <= 3
+}
+
+func isSafeLevel(level int, nextLevel int) bool {
+	delta := int(math.Abs(float64(nextLevel - level)))
+	if !RedNoseFactorIsSafe(delta) {
+		return false
+	}
+	return true
+}
+
+func processLevels(levels []int) bool {
+	deltas := lib.ArrIntDeltas(levels)
+	firstSign := deltas[0]
+
+	for i, delta := range deltas {
+		if delta == 0 { // no delta
+			fmt.Printf("   #%d invalid because delta 0\n", i)
+			return false
+		}
+
+		deltaAbs := int(math.Abs(float64(delta)))
+		if delta > 0 && firstSign != 1 { // change of positive to negative
+			fmt.Printf("   #%d sign change\n", i)
+			return false
+		}
+		if deltaAbs > 3 {
+			fmt.Printf("   #%d invalid delta %d\n", i, deltaAbs)
+			return false
+		}
+		fmt.Printf("   #%d valid delta %d\n", i, deltaAbs)
+	}
+
+	return true
+}
+
+func processInputPartOne2(input string) {
+	lines := strings.Split(input, "\n")
+	sum := 0
+	for _, line := range lines {
+		levels := lib.ArrStrToInt(strings.Split(line, " "))
+		result := processLevels(levels)
+		fmt.Printf("levels: %v, result: %t\n", levels, result)
+		if result {
+			sum++
+		}
+	}
+	fmt.Printf("Number of safe reports: %d\n", sum)
 }
 
 func processInputPartOne(input string) {
@@ -76,6 +125,11 @@ func processInputPartOne(input string) {
 	fmt.Printf("Numer of safe reports: %d\n", numOfSafeReports)
 }
 
-func processInputPartTwo(input string) {
+// func processInputPartTwo(input string) {
+// 	lines := strings.Split(input, "\n")
 
-}
+// 	numOfSafeReports := 0
+// 	for i, line := range lines {
+// 		levels := lib.ArrStrToInt(strings.Split(line, " "))
+// 	}
+// }
