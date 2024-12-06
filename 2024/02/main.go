@@ -27,11 +27,6 @@ func main() {
 	processInputPartOne(rawInput)
 }
 
-func RedNoseFactor(one, two int) int {
-	// return int(math.Abs(float64(one - two)))
-	return two - one
-}
-
 func RedNoseFactorIsSafe(factor int) bool {
 	return factor <= 3
 }
@@ -44,12 +39,7 @@ func processInputPartOne(input string) {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
 
 		// calculate deltas between the level values
-		deltas := lib.ArrIntMap(levels, func(v int, i int) int {
-			if i == len(levels)-1 {
-				return 0
-			}
-			return RedNoseFactor(v, levels[i+1])
-		})[0 : len(levels)-1]
+		deltas := lib.ArrIntDeltas(levels)
 		// find maximum deviation in the deltas
 		deltasAbs := lib.ArrIntAbs(deltas)
 		maxDelta, _ := lib.ArrMax(deltasAbs)
@@ -84,4 +74,8 @@ func processInputPartOne(input string) {
 	}
 
 	fmt.Printf("Numer of safe reports: %d\n", numOfSafeReports)
+}
+
+func processInputPartTwo(input string) {
+
 }

@@ -46,6 +46,16 @@ func ArrMax(input []int) (int, index int) {
 	return max, index
 }
 
+// returns the deltas of all values in teh given array
+func ArrIntDeltas(input []int) []int {
+	return ArrIntMap(input, func(v int, i int) int {
+		if i == len(input)-1 {
+			return 0
+		}
+		return input[i+1] - v
+	})[0 : len(input)-1]
+}
+
 // remove on item of an array
 func ArrIntPopIndex(input []int, index int) []int {
 	return append(input[:index], input[index+1:]...)
