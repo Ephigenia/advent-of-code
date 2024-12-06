@@ -78,12 +78,28 @@ func processInputPartOne(input string) {
 	fmt.Printf("Number of safe reports: %d\n", sum)
 }
 
+// why is example line 4 and 5 safe?
+// #2
+// 1   2   7   8   9
+//   1   5   1   1    to high delta, errors: 1
+//
+// #3
+// 9   7   6   2   1
+//   -2  -1  -4  -1  to high delta, errors: 1
+//
+// #4                   ?????
+// 1   3   2   4   5
+//   2   -1  2   1    errors 1
+//
+// 1       2   4   5
+//    1      2   1    errors 1
+
 func processInputPartTwo(input string) {
 	lines := strings.Split(input, "\n")
 	sum := 0
 	for index, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
-		result, errorCount := processLevels(levels, 2)
+		result, errorCount := processLevels(levels, 1)
 		fmt.Printf("#%d %t %v (%d error(s))\n", index, result, levels, errorCount)
 		if result {
 			sum++
