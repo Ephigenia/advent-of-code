@@ -31,18 +31,18 @@ func main() {
 
 func isValidDelta(delta int, firstSign int) (bool, error) {
 	deltaAbs := int(math.Abs(float64(delta)))
-	if delta == 0 { // no delta
-		return false, errors.New("delta 0")
-	} else if (delta > 0 && firstSign != 1) ||
+	if (delta > 0 && firstSign != 1) ||
 		(delta < 0 && firstSign != -1) { // change of positive to negative
 		return false, errors.New("sign change")
+	} else if delta == 0 { // no delta
+		return false, errors.New("delta 0")
 	} else if deltaAbs > 3 {
 		return false, errors.New("to large delta")
 	}
 	return true, nil
 }
 
-func processLevels(levels []int, maxErrors int) bool {
+func processLevels(levels []int, maxErrors int) (bool, int) {
 	deltas := lib.ArrIntDeltas(levels)
 
 	firstSign := 1
@@ -57,21 +57,20 @@ func processLevels(levels []int, maxErrors int) bool {
 			errorCount++
 		}
 		if errorCount > maxErrors {
-			fmt.Printf("to many errors %v", levels)
-			return false
+			return false, errorCount
 		}
 	}
 
-	return true
+	return true, errorCount
 }
 
 func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
 	sum := 0
-	for _, line := range lines {
+	for index, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
-		result := processLevels(levels, 0)
-		fmt.Printf("levels: %v, result: %t\n", levels, result)
+		result, errorCount := processLevels(levels, 0)
+		fmt.Printf("#%d %t %v (%d error(s))\n", index, result, levels, errorCount)
 		if result {
 			sum++
 		}
@@ -82,10 +81,10 @@ func processInputPartOne(input string) {
 func processInputPartTwo(input string) {
 	lines := strings.Split(input, "\n")
 	sum := 0
-	for _, line := range lines {
+	for index, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
-		result := processLevels(levels, 1)
-		fmt.Printf("levels: %v, result: %t\n", levels, result)
+		result, errorCount := processLevels(levels, 1)
+		fmt.Printf("#%d %t %v (%d error(s))\n", index, result, levels, errorCount)
 		if result {
 			sum++
 		}
