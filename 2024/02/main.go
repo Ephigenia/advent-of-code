@@ -29,23 +29,12 @@ func main() {
 	processInputPartTwo(rawInput)
 }
 
-func RedNoseFactorIsSafe(factor int) bool {
-	return factor <= 3
-}
-
-func isSafeLevel(level int, nextLevel int) bool {
-	delta := int(math.Abs(float64(nextLevel - level)))
-	if !RedNoseFactorIsSafe(delta) {
-		return false
-	}
-	return true
-}
-
-func analyzeDelta(delta int, deltaAbs int, firstSign int) (bool, error) {
+func isValidDelta(delta int, firstSign int) (bool, error) {
+	deltaAbs := int(math.Abs(float64(delta)))
 	if delta == 0 { // no delta
 		return false, errors.New("delta 0")
-	} else if delta > 0 && firstSign != 1 ||
-		delta < 0 && firstSign != -1 { // change of positive to negative
+	} else if (delta > 0 && firstSign != 1) ||
+		(delta < 0 && firstSign != -1) { // change of positive to negative
 		return false, errors.New("sign change")
 	} else if deltaAbs > 3 {
 		return false, errors.New("to large delta")
@@ -54,16 +43,16 @@ func analyzeDelta(delta int, deltaAbs int, firstSign int) (bool, error) {
 }
 
 func processLevels(levels []int, allowedInvalids int) bool {
-	errorCount := 0
 	deltas := lib.ArrIntDeltas(levels)
+
 	firstSign := 1
 	if deltas[0] < 0 {
 		firstSign = -1
 	}
 
-	for i, delta := range deltas {
-		deltaAbs := int(math.Abs(float64(delta)))
-		_, err := analyzeDelta(delta, deltaAbs, firstSign)
+	errorCount := 0
+	for _, delta := range deltas {
+		_, err := isValidDelta(delta, firstSign)
 		if err != nil {
 			errorCount++
 		}
