@@ -26,7 +26,7 @@ func main() {
 	}
 
 	processInputPartOne(rawInput)
-	// processInputPartTwo(rawInput)
+	processInputPartTwo(rawInput)
 }
 
 func RedNoseFactorIsSafe(factor int) bool {
@@ -41,7 +41,20 @@ func isSafeLevel(level int, nextLevel int) bool {
 	return true
 }
 
+func analyzeDelta(delta int, deltaAbs int, firstSign int) (bool, error) {
+	if delta == 0 { // no delta
+		return false, errors.New("delta 0")
+	} else if delta > 0 && firstSign != 1 ||
+		delta < 0 && firstSign != -1 { // change of positive to negative
+		return false, errors.New("sign change")
+	} else if deltaAbs > 3 {
+		return false, errors.New("to large delta")
+	}
+	return true, nil
+}
+
 func processLevels(levels []int, allowedInvalids int) bool {
+	errorCount := 0
 	deltas := lib.ArrIntDeltas(levels)
 	firstSign := 1
 	if deltas[0] < 0 {
@@ -49,23 +62,14 @@ func processLevels(levels []int, allowedInvalids int) bool {
 	}
 
 	for i, delta := range deltas {
-		if delta == 0 { // no delta
-			fmt.Printf("   #%d invalid because delta 0\n", i)
-			return false
-		}
-
 		deltaAbs := int(math.Abs(float64(delta)))
-		if delta > 0 && firstSign != 1 ||
-			delta < 0 && firstSign != -1 { // change of positive to negative
-			fmt.Printf("   #%d sign change\n", i)
+		_, err := analyzeDelta(delta, deltaAbs, firstSign)
+		if err != nil {
+			errorCount++
+		}
+		if errorCount > allowedInvalids {
 			return false
 		}
-
-		if deltaAbs > 3 {
-			fmt.Printf("   #%d invalid delta %d\n", i, deltaAbs)
-			return false
-		}
-		fmt.Printf("   #%d valid delta %d\n", i, deltaAbs)
 	}
 
 	return true
@@ -85,11 +89,16 @@ func processInputPartOne(input string) {
 	fmt.Printf("Number of safe reports: %d\n", sum)
 }
 
-// func processInputPartTwo(input string) {
-// 	lines := strings.Split(input, "\n")
-
-// 	numOfSafeReports := 0
-// 	for i, line := range lines {
-// 		levels := lib.ArrStrToInt(strings.Split(line, " "))
-// 	}
-// }
+func processInputPartTwo(input string) {
+	lines := strings.Split(input, "\n")
+	sum := 0
+	for _, line := range lines {
+		levels := lib.ArrStrToInt(strings.Split(line, " "))
+		result := processLevels(levels, 2)
+		fmt.Printf("levels: %v, result: %t\n", levels, result)
+		if result {
+			sum++
+		}
+	}
+	fmt.Printf("Number of safe reports: %d\n", sum)
+}
