@@ -53,7 +53,7 @@ func processLevels(levels []int, maxErrors int) (bool, int) {
 	errorCount := 0
 	for _, delta := range deltas {
 		_, err := isValidDelta(delta, firstSign)
-		if err != nil {
+		if err != nil && err.Error() != "to large delta" {
 			errorCount++
 		}
 		if errorCount > maxErrors {
