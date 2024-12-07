@@ -26,6 +26,7 @@ func main() {
 	}
 
 	processInputPartOne(rawInput)
+	fmt.Println("----")
 	processInputPartTwo(rawInput)
 }
 
@@ -42,26 +43,45 @@ func isValidDelta(delta int, firstSign int) (bool, error) {
 	return true, nil
 }
 
-func processLevels(levels []int, maxInvalidDeltas int) (bool, int) {
-	deltas := lib.ArrIntDeltas(levels)
+// 526
+// 524
 
+func processLevels(levels []int, maxInvalidDeltas int) bool {
+	deltas := lib.ArrIntDeltas(levels)
 	firstSign := 1
 	if deltas[0] < 0 {
 		firstSign = -1
 	}
 
-	errorCount := 0
-	for _, delta := range deltas {
+	checked := false
+	for i, delta := range deltas {
 		_, err := isValidDelta(delta, firstSign)
+
 		if err != nil {
-			errorCount++
-		}
-		if errorCount > 0 && errorCount >= maxInvalidDeltas {
-			return false, errorCount
+			if checked {
+				return false
+			}
+			if maxInvalidDeltas == 0 {
+				return false
+			}
+			if len(deltas)-1 == i {
+				return false
+			}
+
+			// check if it would work with the next delta
+			nextDelta := deltas[i+1]
+			nextDeltaTest := nextDelta + delta
+			if maxInvalidDeltas > 0 {
+				checked = true
+				_, err2 := isValidDelta(nextDeltaTest, firstSign)
+				if err2 != nil {
+					return false
+				}
+			}
 		}
 	}
 
-	return true, errorCount
+	return true
 }
 
 func processInputPartOne(input string) {
@@ -69,8 +89,8 @@ func processInputPartOne(input string) {
 	sum := 0
 	for index, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
-		result, errorCount := processLevels(levels, 0)
-		fmt.Printf("#%d %t %v (%d error(s))\n", index, result, levels, errorCount)
+		result := processLevels(levels, 0)
+		fmt.Printf("#%d %t %v\n", index, result, levels)
 		if result {
 			sum++
 		}
@@ -78,29 +98,13 @@ func processInputPartOne(input string) {
 	fmt.Printf("Number of safe reports: %d\n", sum)
 }
 
-// why is example line 4 and 5 safe?
-// #2
-// 1   2   7   8   9
-//   1   5   1   1    to high delta, errors: 1
-//
-// #3
-// 9   7   6   2   1
-//   -2  -1  -4  -1  to high delta, errors: 1
-//
-// #4                   ?????
-// 1   3   2   4   5
-//   2   -1  2   1    errors 1
-//
-// 1       2   4   5
-//    1      2   1    errors 1
-
 func processInputPartTwo(input string) {
 	lines := strings.Split(input, "\n")
 	sum := 0
 	for index, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
-		result, errorCount := processLevels(levels, 1)
-		fmt.Printf("#%d %t %v (%d error(s))\n", index, result, levels, errorCount)
+		result := processLevels(levels, 1)
+		fmt.Printf("#%d %t %v\n", index, result, levels)
 		if result {
 			sum++
 		}
