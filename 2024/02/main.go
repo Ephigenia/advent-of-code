@@ -69,14 +69,10 @@ func processLevels(levels []int, maxInvalidDeltas int) bool {
 			}
 
 			// check if it would work with the next delta
-			nextDelta := deltas[i+1]
-			nextDeltaTest := nextDelta + delta
-			if maxInvalidDeltas > 0 {
-				checked = true
-				_, err2 := isValidDelta(nextDeltaTest, firstSign)
-				if err2 != nil {
-					return false
-				}
+			checked = true
+			_, err2 := isValidDelta(deltas[i+1]+delta, firstSign)
+			if err2 != nil {
+				return false
 			}
 		}
 	}
