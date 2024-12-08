@@ -48,6 +48,7 @@ func isValidDelta(delta int, firstSign int) (bool, error) {
 
 func processLevels(levels []int, maxInvalidDeltas int) bool {
 	deltas := lib.ArrIntDeltas(levels)
+	fmt.Printf("Deltas: %v\n", deltas)
 	firstSign := 1
 	if deltas[0] < 0 {
 		firstSign = -1
@@ -86,7 +87,7 @@ func processInputPartOne(input string) {
 	for index, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
 		result := processLevels(levels, 0)
-		fmt.Printf("#%d %t %v\n", index, result, levels)
+		fmt.Printf("#%d %t %v\n\n", index, result, levels)
 		if result {
 			sum++
 		}
@@ -100,7 +101,7 @@ func processInputPartTwo(input string) {
 	for index, line := range lines {
 		levels := lib.ArrStrToInt(strings.Split(line, " "))
 		result := processLevels(levels, 1)
-		fmt.Printf("#%d %t %v\n", index, result, levels)
+		fmt.Printf("#%d %t %v\n\n", index, result, levels)
 		if result {
 			sum++
 		}
