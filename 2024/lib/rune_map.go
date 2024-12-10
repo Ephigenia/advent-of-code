@@ -14,8 +14,12 @@ type RuneMap struct {
 }
 
 func NewRuneMap(width, height int) *RuneMap {
+	data := make([][]rune, height)
+	for y := 0; y < height; y++ {
+		data[y] = make([]rune, width)
+	}
 	return &RuneMap{
-		data:   make([][]rune, height, width),
+		data:   data,
 		width:  width,
 		height: height,
 	}
