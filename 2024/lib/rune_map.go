@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -14,6 +13,7 @@ type RuneMap struct {
 }
 
 func NewRuneMap(width, height int) *RuneMap {
+	// make 2d array
 	data := make([][]rune, height)
 	for y := 0; y < height; y++ {
 		data[y] = make([]rune, width)
@@ -33,7 +33,6 @@ func NewRuneMapFromString(input string) *RuneMap {
 	r := NewRuneMap(width, height)
 	for y, line := range lines {
 		for x, char := range line {
-			fmt.Printf("x: %d, y: %d, char: %c\n", x, y, char)
 			r.Set(x, y, char)
 		}
 	}
@@ -47,7 +46,7 @@ func (r *RuneMap) GetData() [][]rune {
 func (r *RuneMap) String() string {
 	lines := make([]string, r.height)
 	for y := 0; y < r.height; y++ {
-		lines[y] = string(r.data[y]) + lf
+		lines[y] = string(r.data[y])
 	}
 	return strings.Join(lines, lf)
 }
