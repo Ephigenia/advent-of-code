@@ -27,6 +27,12 @@ func main() {
 }
 
 func processInputPartOne(input string) {
-	grid := lib.NewRuneMapFromString(input)
-	fmt.Printf(grid.String())
+	matrix := lib.NewStringMatrixFromString(input)
+	// visited := lib.NewRuneMapFromString(input)
+
+	fmt.Print(matrix.String())
+
+	fmt.Printf("%v", matrix.Get(1, 1))
+
+	// go through each letter and find XMAS
 }
