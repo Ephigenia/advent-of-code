@@ -64,3 +64,12 @@ func (r *StringMatrix) Get(x, y int) string {
 func (r *StringMatrix) Exists(x, y int) bool {
 	return x > 0 && x < r.width && y > 0 && y < r.height
 }
+
+func (r *StringMatrix) GetInDirection(x, y int, direction []int) string {
+  found := []string{}
+  do {
+    found = append(found, r.Get(x+direction[0], y+direction[1]))
+  } while r.Exists(x+direction[0], y+direction[0])
+
+	return strings.Join(found, "")
+}

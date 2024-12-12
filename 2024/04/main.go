@@ -26,13 +26,31 @@ func main() {
 	processInputPartOne(rawInput)
 }
 
+var directions = [][]int{
+	{0, -1},  // up
+	{1, -1},  // up right
+	{1, 0},   // right
+	{1, 1},   // bottom right
+	{0, 1},   // bottom
+	{-1, 1},  // bottom left
+	{-1, 0},  // left
+	{-1, -1}, // top left
+}
+
 func processInputPartOne(input string) {
 	matrix := lib.NewStringMatrixFromString(input)
 	// visited := lib.NewRuneMapFromString(input)
 
 	fmt.Print(matrix.String())
 
-	fmt.Printf("%v", matrix.Get(1, 1))
+	for y, row := range matrix.GetData() {
+		for x := range row {
+			cur := matrix.Get(x, y)
+			if cur == "X" {
+				matrix.Search(x, y, directions, "MAS")
+			}
+		}
+	}
 
 	// go through each letter and find XMAS
 }
