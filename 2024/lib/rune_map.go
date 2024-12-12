@@ -66,10 +66,13 @@ func (r *StringMatrix) Exists(x, y int) bool {
 }
 
 func (r *StringMatrix) GetInDirection(x, y int, direction []int) string {
-  found := []string{}
-  do {
-    found = append(found, r.Get(x+direction[0], y+direction[1]))
-  } while r.Exists(x+direction[0], y+direction[0])
+	found := []string{}
+	for r.Exists(x, y) {
+		x += direction[0]
+		y += direction[1]
+		c := r.Get(x, y)
+		found = append(found, c)
+	}
 
 	return strings.Join(found, "")
 }

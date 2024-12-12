@@ -47,7 +47,8 @@ func processInputPartOne(input string) {
 		for x := range row {
 			cur := matrix.Get(x, y)
 			if cur == "X" {
-				matrix.Search(x, y, directions, "MAS")
+				found := matrix.GetInDirection(x, y, directions[2])
+				fmt.Printf("found X at %d/%d (%s), %s\n", x, y, cur, cur+found)
 			}
 		}
 	}
