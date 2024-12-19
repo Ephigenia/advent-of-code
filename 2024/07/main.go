@@ -65,28 +65,39 @@ func operate(a, b int, operation string) int {
 }
 
 func TryMe(result int, args ...int) int {
-	solutions := []int{}
-	for index, arg := range args {
-		if index == len(args)-1 {
+	operators := []string{"+", "*"}
+	solutions := make([]int, (len(args)-1)*len(operators))
+
+	for i := range solutions {
+		solutions[i] = args[0]
+	}
+
+	for argI, arg := range args {
+		if argI == 0 {
 			continue
 		}
-		solution := operate(arg, args[index+1], "+")
-		solutions = append(solutions, solution)
-		solution = operate(arg, args[index+1], "*")
-		solutions = append(solutions, solution)
+		for oI, operator := range operators {
+			// i := (argI + (oI * 2)) - 1
+			i := argI + oI
+			fmt.Printf("---%d %d\n", argI, oI)
+			fmt.Printf("#%d: %d %s %d\n", i, solutions[i], operator, arg)
+			solutions[i] = operate(solutions[i], arg, operator)
+		}
 	}
+
 	spew.Dump(solutions)
-	return 0
+
+	return len(solutions)
 }
 
 func processInputPartOne(inputs []InputLine) {
 	for i, input := range inputs {
-		if i > 1 {
+		if i != 1 {
 			continue
 		}
-		correctCombinations := TryMe(input.result, input.numbers...)
+		possibleEquationResults := TryMe(input.result, input.numbers...)
 
-		fmt.Printf("%d: %v %d\n", input.result, input.numbers, correctCombinations)
+		fmt.Printf("%d: %v %d\n", input.result, input.numbers, possibleEquationResults)
 	}
 	// spew.Dump(inputs)
 }
