@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -54,39 +53,51 @@ func parseInput(str string) []InputLine {
 	return inputs
 }
 
-func operate(a, b int, operation string) int {
-	if operation == "+" {
-		return a + b
+func backtrack(target, index, current int, numbers []int, concat bool) bool {
+	if index == len(numbers) {
+		return current == target
 	}
-	if operation == "*" {
-		return a * b
+	if backtrack(target, index+1, current+numbers[index], numbers, concat) {
+		return true
 	}
-	panic("invalid operatoration")
+	if backtrack(target, index+1, current*numbers[index], numbers, concat) {
+		return true
+	}
+
+	// part two
+	if concat {
+		val, _ := strconv.Atoi(fmt.Sprintf("%d%d", current, numbers[index]))
+		if backtrack(target, index+1, val, numbers, concat) {
+			return true
+		}
+	}
+
+	return false
 }
 
-func TryMe(result int, args ...int) int {
-	solutions := []int{}
-	for index, arg := range args {
-		if index == len(args)-1 {
-			continue
-		}
-		solution := operate(arg, args[index+1], "+")
-		solutions = append(solutions, solution)
-		solution = operate(arg, args[index+1], "*")
-		solutions = append(solutions, solution)
-	}
-	spew.Dump(solutions)
-	return 0
+func TryMe(result int, numbers []int, concat bool) bool {
+	return backtrack(result, 1, numbers[0], numbers, concat)
+}
+
+func processInputPartTwo(inputs []InputLine) {
+
 }
 
 func processInputPartOne(inputs []InputLine) {
-	for i, input := range inputs {
-		if i > 1 {
-			continue
+	total := 0
+	total2 := 0
+	for _, input := range inputs {
+		if TryMe(input.result, input.numbers, false) {
+			total += input.result
 		}
-		correctCombinations := TryMe(input.result, input.numbers...)
 
-		fmt.Printf("%d: %v %d\n", input.result, input.numbers, correctCombinations)
+		if TryMe(input.result, input.numbers, true) {
+			total2 += input.result
+		}
+
+		fmt.Printf("%d: %v\n", input.result, input.numbers)
 	}
+	fmt.Printf("Total 1part: %d\n", total)
+	fmt.Printf("Total 2part: %d\n", total2)
 	// spew.Dump(inputs)
 }
