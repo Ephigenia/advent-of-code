@@ -61,6 +61,15 @@ func ArrIntPopIndex(input []int, index int) []int {
 	return append(input[:index], input[index+1:]...)
 }
 
+func ArrIntIndexOf(input []int, needle int) int {
+	for i, v := range input {
+		if v == needle {
+			return i
+		}
+	}
+	return -1
+}
+
 func ArrIntSum(input []int) int {
 	return ArrIntReduce(input, func(v int, i int, acc int) int {
 		return acc + v
