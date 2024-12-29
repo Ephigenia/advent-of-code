@@ -41,17 +41,27 @@ func processInputPartOne(input string) {
 	matrix := lib.NewStringMatrixFromString(input)
 	// visited := lib.NewRuneMapFromString(input)
 
-	fmt.Print(matrix.String())
+	fmt.Print(matrix.String() + "\n")
+
+	occurrences := 0
 
 	for y, row := range matrix.GetData() {
 		for x := range row {
 			cur := matrix.Get(x, y)
-			if cur == "X" {
-				found := matrix.GetInDirection(x, y, directions[2])
-				fmt.Printf("found X at %d/%d (%s), %s\n", x, y, cur, cur+found)
+			for _, direction := range directions {
+				if cur == "X" {
+					isFound := matrix.FindInDirection(x, y, direction, "XMAS")
+					if isFound {
+						occurrences++
+						found := matrix.GetInDirection(x, y, direction)
+						fmt.Printf("found \"X\" at %d:%d (%s), %s\n", x, y, cur, cur+found)
+					}
+				}
 			}
 		}
 	}
+
+	fmt.Printf("Found %d occurrences of XMAS\n", occurrences)
 
 	// go through each letter and find XMAS
 }

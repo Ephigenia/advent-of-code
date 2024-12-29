@@ -62,7 +62,7 @@ func (r *StringMatrix) Get(x, y int) string {
 }
 
 func (r *StringMatrix) Exists(x, y int) bool {
-	return x > 0 && x < r.width && y > 0 && y < r.height
+	return x > -1 && x < r.width && y > -1 && y < r.height
 }
 
 func (r *StringMatrix) GetInDirection(x, y int, direction []int) string {
@@ -75,4 +75,18 @@ func (r *StringMatrix) GetInDirection(x, y int, direction []int) string {
 	}
 
 	return strings.Join(found, "")
+}
+
+func (r *StringMatrix) FindInDirection(x, y int, direction []int, query string) bool {
+	found := []string{}
+	for r.Exists(x, y) {
+		c := r.Get(x, y)
+		found = append(found, c)
+		if strings.Join(found, "") == query {
+			return true
+		}
+		x += direction[0]
+		y += direction[1]
+	}
+	return false
 }
