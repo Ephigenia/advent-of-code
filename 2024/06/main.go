@@ -12,6 +12,7 @@ import (
 const WALL = "#"
 const EMPTY = "."
 const GUARD_UP = "^"
+const VISITED = "X"
 
 var DIRECTIONS = map[string][]int{
 	"up":    {0, -1}, // up
@@ -59,7 +60,10 @@ func getNextDirection(direction string) string {
 }
 
 func processInputPartOne(matrix *lib.StringMatrix) {
-	fmt.Println(matrix.String())
+	fmt.Println(matrix.String() + "\n")
+
+	visited := matrix.Clone()
+	fmt.Println(visited.String() + "\n")
 
 	x, y := matrix.Find(GUARD_UP)
 	if x == -1 || y == -1 {
@@ -70,8 +74,11 @@ func processInputPartOne(matrix *lib.StringMatrix) {
 
 	direction := "up"
 	i := 0
+
 	for matrix.Exists(x, y) && i < 4096 {
+		oldX, oldY := x, y
 		x, y = matrix.WalkInDirection(x, y, DIRECTIONS[direction], WALL)
+		visited.Fill(x, y, oldX, oldY, VISITED)
 		direction = getNextDirection(direction)
 		if x == -1 && y == -1 {
 			fmt.Printf("Exit found at %d:%d\n", x, y)
@@ -80,4 +87,6 @@ func processInputPartOne(matrix *lib.StringMatrix) {
 		}
 		i++
 	}
+
+	fmt.Println(visited.String() + "\n")
 }

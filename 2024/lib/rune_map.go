@@ -42,6 +42,32 @@ func (r *StringMatrix) GetData() [][]string {
 	return r.data
 }
 
+func (r *StringMatrix) GetWidth() int {
+	return r.width
+}
+
+func (r *StringMatrix) GetHeight() int {
+	return r.height
+}
+
+func (r *StringMatrix) Fill(x1, y1, x2, y2 int, str string) {
+	if x1 > x2 {
+		tmp := x1
+		x1 = x2
+		x2 = tmp
+	}
+	if y1 > y2 {
+		tmp := y1
+		y1 = y2
+		y2 = tmp
+	}
+	for y := y1; y < y2; y++ {
+		for x := x1; x < x2; x++ {
+			r.Set(x, y, str)
+		}
+	}
+}
+
 func (r *StringMatrix) String() string {
 	lines := make([]string, r.height)
 	for y := 0; y < r.height; y++ {
@@ -51,6 +77,18 @@ func (r *StringMatrix) String() string {
 }
 
 func (r *StringMatrix) Set(x, y int, value string) {
+	if x == -1 {
+		return
+	}
+	if y == -1 {
+		return
+	}
+	if x >= r.width-1 {
+		x = r.width - 1
+	}
+	if y >= r.width-1 {
+		y = r.width - 1
+	}
 	r.data[y][x] = value
 }
 
@@ -106,4 +144,26 @@ func (r *StringMatrix) Find(query string) (int, int) {
 		}
 	}
 	return -1, -1
+}
+
+func (r *StringMatrix) Clone() *StringMatrix {
+	clone := NewStringMatrix(r.width, r.height)
+	for y := 0; y < r.height; y++ {
+		for x := 0; x < r.width; x++ {
+			clone.Set(x, y, r.Get(x, y))
+		}
+	}
+	return clone
+}
+
+func (r *StringMatrix) FindAll(query string) [][]int {
+	found := make([][]int, 0)
+	for y := 0; y < r.height; y++ {
+		for x := 0; x < r.width; x++ {
+			if r.Get(x, y) == query {
+				found = append(found, []int{x, y})
+			}
+		}
+	}
+	return found
 }
