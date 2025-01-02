@@ -77,16 +77,27 @@ func (r *StringMatrix) GetInDirection(x, y int, direction []int) string {
 	return strings.Join(found, "")
 }
 
-func (r *StringMatrix) FindInDirection(x, y int, direction []int, query string) bool {
+func (r *StringMatrix) FindInDirection(x, y int, direction []int, query string) (int, int) {
 	found := []string{}
 	for r.Exists(x, y) {
 		c := r.Get(x, y)
 		found = append(found, c)
 		if strings.Join(found, "") == query {
-			return true
+			return x, y
 		}
 		x += direction[0]
 		y += direction[1]
 	}
-	return false
+	return -1, -1
+}
+
+func (r *StringMatrix) Find(query string) (int, int) {
+	for y := 0; y < r.height; y++ {
+		for x := 0; x < r.width; x++ {
+			if r.Get(x, y) == query {
+				return x, y
+			}
+		}
+	}
+	return -1, -1
 }

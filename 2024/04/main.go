@@ -89,8 +89,8 @@ func processInputPartOne(input string) {
 			cur := matrix.Get(x, y)
 			for _, direction := range directions {
 				if cur == "X" {
-					isFound := matrix.FindInDirection(x, y, direction, "XMAS")
-					if isFound {
+					isFoundX, isFoundY := matrix.FindInDirection(x, y, direction, "XMAS")
+					if isFoundX > -1 && isFoundY > -1 {
 						occurrences++
 						found := matrix.GetInDirection(x, y, direction)
 						fmt.Printf("found \"X\" at %d:%d (%s), %s\n", x, y, cur, cur+found)
