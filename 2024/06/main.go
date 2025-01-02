@@ -44,6 +44,20 @@ func parseInput(str string) *lib.StringMatrix {
 	return matrix
 }
 
+func getNextDirection(direction string) string {
+	switch direction {
+	case "up":
+		return "right"
+	case "right":
+		return "down"
+	case "down":
+		return "left"
+	case "left":
+		return "up"
+	}
+	panic("unknown direction")
+}
+
 func processInputPartOne(matrix *lib.StringMatrix) {
 	fmt.Println(matrix.String())
 
@@ -52,9 +66,18 @@ func processInputPartOne(matrix *lib.StringMatrix) {
 		panic("could not find start position")
 	}
 
-	fmt.Printf("Start: %d:%d", x, y)
+	fmt.Printf("Start: %d:%d\n", x, y)
 
-	direction := DIRECTIONS["up"]
-	nextHindernis := matrix.FindInDirection(x, y, direction, WALL)
-
+	direction := "up"
+	i := 0
+	for matrix.Exists(x, y) && i < 4096 {
+		x, y = matrix.WalkInDirection(x, y, DIRECTIONS[direction], WALL)
+		direction = getNextDirection(direction)
+		if x == -1 && y == -1 {
+			fmt.Printf("Exit found at %d:%d\n", x, y)
+		} else {
+			fmt.Printf("Wall at: %d:%d\n", x, y)
+		}
+		i++
+	}
 }

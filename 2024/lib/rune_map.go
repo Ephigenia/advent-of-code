@@ -77,18 +77,24 @@ func (r *StringMatrix) GetInDirection(x, y int, direction []int) string {
 	return strings.Join(found, "")
 }
 
-func (r *StringMatrix) FindInDirection(x, y int, direction []int, query string) (int, int) {
-	found := []string{}
+func (r *StringMatrix) FindInDirection(x, y int, direction []int, str string) (int, int) {
 	for r.Exists(x, y) {
-		c := r.Get(x, y)
-		found = append(found, c)
-		if strings.Join(found, "") == query {
+		// fmt.Printf("found: %d:%d %s\n", x, y, r.Get(x, y))
+		if r.Get(x, y) == str {
 			return x, y
 		}
 		x += direction[0]
 		y += direction[1]
 	}
 	return -1, -1
+}
+
+func (r *StringMatrix) WalkInDirection(x, y int, direction []int, str string) (int, int) {
+	fx, fy := r.FindInDirection(x, y, direction, str)
+	if fx > -1 && fy > -1 {
+		return fx - direction[0], fy - direction[1]
+	}
+	return fx, fy
 }
 
 func (r *StringMatrix) Find(query string) (int, int) {
@@ -100,5 +106,4 @@ func (r *StringMatrix) Find(query string) (int, int) {
 		}
 	}
 	return -1, -1
->>>>>>> main
 }
