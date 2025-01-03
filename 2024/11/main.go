@@ -72,7 +72,7 @@ func iterate(in []string) []string {
 }
 
 func processInputPartOne(input []string) {
-	processInput(input, 5)
+	processInput(input, 25)
 	// turns out running it 75 times is memory intensive
 	// redesign to stream
 	// processInput(input, 75)
