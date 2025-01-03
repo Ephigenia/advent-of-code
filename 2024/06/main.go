@@ -3,11 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log/slog"
 	"os"
 	"path"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
+	"github.com/davecgh/go-spew/spew"
 )
 
 const WALL = "#"
@@ -61,40 +61,42 @@ func getNextDirection(direction string) string {
 }
 
 func processInputPartOne(matrix *lib.StringMatrix) {
-	slog.New(slog.NewTextHandler(os.Stdout, nil))
-	slog.Debug(matrix.String())
-
-	visited := matrix.Clone()
-	slog.Debug(visited.String())
-
 	// find the start position
 	x, y := matrix.Find(GUARD_UP)
 	if x == -1 || y == -1 {
 		panic("could not find start position")
 	}
-	slog.Info(fmt.Sprintf("Start: %d:%d\n", x, y))
+	fmt.Println(fmt.Sprintf("Start: %d:%d\n", x, y))
+	matrix.Fill(x, y, x, y, EMPTY) // remove starting margin
+
+	matrix.Fill(7, 7, 7, 10, VISITED)
 
 	// walk into directions until a wall is hit and then
 	// change the direction until the matrix is left
-	direction := "up"
+	visited := matrix.Clone()
+	direction := "left"
+	found := true
 	i := 0
 	const MAX_ITERATIONS = 4096
-	for matrix.Exists(x, y) && i < MAX_ITERATIONS {
+	for found && i < MAX_ITERATIONS {
 		i++
 		oldX, oldY := x, y
+
 		// continue walking until next wall is found
-		x, y = matrix.WalkInDirection(x, y, DIRECTIONS[direction], WALL)
+		x, y, found = matrix.WalkInDirection(x, y, DIRECTIONS[direction], WALL)
+
+		if found {
+			// change direction
+			direction = getNextDirection(direction)
+			fmt.Println(fmt.Sprintf("Wall at: %d:%d, going %s", x, y, direction))
+		}
 		// mark the visited positions
 		visited.Fill(x, y, oldX, oldY, VISITED)
-		// change direction
-		direction = getNextDirection(direction)
-		slog.Info(fmt.Sprintf("Walked to: %d:%d %d:%d\n", oldX, oldY, x, y))
-		if x != -1 && y != -1 {
-			slog.Debug(fmt.Sprintf("Wall at: %d:%d\n", x, y))
-		}
 	}
 
-	slog.Info(visited.String())
-	slog.Info(fmt.Sprintf("Exit found at %d:%d\n", x, y))
-
+	fmt.Println(matrix.String() + "\n")
+	fmt.Println(visited.String())
+	spew.Dump(visited.FindAll(VISITED))
+	fmt.Printf("visited nodes: %d\n", len(visited.FindAll(VISITED)))
+	fmt.Println(fmt.Sprintf("Exit found at %d:%d", x, y))
 }

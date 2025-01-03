@@ -61,8 +61,8 @@ func (r *StringMatrix) Fill(x1, y1, x2, y2 int, str string) {
 		y1 = y2
 		y2 = tmp
 	}
-	for y := y1; y < y2; y++ {
-		for x := x1; x < x2; x++ {
+	for y := y1; y <= y2; y++ {
+		for x := x1; x <= x2; x++ {
 			r.Set(x, y, str)
 		}
 	}
@@ -103,11 +103,14 @@ func (r *StringMatrix) Exists(x, y int) bool {
 	return x > -1 && x < r.width && y > -1 && y < r.height
 }
 
+func movePosition(x, y int, direction []int) (int, int) {
+	return x + direction[0], y + direction[1]
+}
+
 func (r *StringMatrix) GetInDirection(x, y int, direction []int) string {
 	found := []string{}
 	for r.Exists(x, y) {
-		x += direction[0]
-		y += direction[1]
+		x, y = movePosition(x, y, direction)
 		c := r.Get(x, y)
 		found = append(found, c)
 	}
@@ -115,24 +118,22 @@ func (r *StringMatrix) GetInDirection(x, y int, direction []int) string {
 	return strings.Join(found, "")
 }
 
-func (r *StringMatrix) FindInDirection(x, y int, direction []int, str string) (int, int) {
+func (r *StringMatrix) FindInDirection(x, y int, direction []int, str string) (int, int, bool) {
 	for r.Exists(x, y) {
-		// fmt.Printf("found: %d:%d %s\n", x, y, r.Get(x, y))
 		if r.Get(x, y) == str {
-			return x, y
+			return x, y, true
 		}
-		x += direction[0]
-		y += direction[1]
+		x, y = movePosition(x, y, direction)
 	}
-	return -1, -1
+	return x, y, false
 }
 
-func (r *StringMatrix) WalkInDirection(x, y int, direction []int, str string) (int, int) {
-	fx, fy := r.FindInDirection(x, y, direction, str)
-	if fx > -1 && fy > -1 {
-		return fx - direction[0], fy - direction[1]
+func (r *StringMatrix) WalkInDirection(x, y int, direction []int, str string) (int, int, bool) {
+	fx, fy, found := r.FindInDirection(x, y, direction, str)
+	if found {
+		return fx - direction[0], fy - direction[1], found
 	}
-	return fx, fy
+	return fx, fy, found
 }
 
 func (r *StringMatrix) Find(query string) (int, int) {
