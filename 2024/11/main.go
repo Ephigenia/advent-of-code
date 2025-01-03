@@ -72,16 +72,18 @@ func iterate(in []string) []string {
 }
 
 func processInputPartOne(input []string) {
-	processInput(input, 25)
+	processInput(input, 10)
 	// turns out running it 75 times is memory intensive
-	processInput(input, 75)
+	// redesign to stream
+	// processInput(input, 75)
 }
 
 func processInput(input []string, iterationsCount int) {
 	next := input
 	for i := 0; i < iterationsCount; i++ {
 		next = iterate(next)
-		fmt.Printf("Iteration %d: %d\n", i, len(next))
+		fmt.Printf("Iteration %d: %v\n", i, next)
+		// fmt.Printf("Iteration %d: %d\n", i, len(next))
 	}
 
 	fmt.Printf("# of stones: %d\n", len(next))
