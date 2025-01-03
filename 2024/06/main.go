@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"path"
 
@@ -60,33 +61,40 @@ func getNextDirection(direction string) string {
 }
 
 func processInputPartOne(matrix *lib.StringMatrix) {
-	fmt.Println(matrix.String() + "\n")
+	slog.New(slog.NewTextHandler(os.Stdout, nil))
+	slog.Debug(matrix.String())
 
 	visited := matrix.Clone()
-	fmt.Println(visited.String() + "\n")
+	slog.Debug(visited.String())
 
+	// find the start position
 	x, y := matrix.Find(GUARD_UP)
 	if x == -1 || y == -1 {
 		panic("could not find start position")
 	}
+	slog.Info(fmt.Sprintf("Start: %d:%d\n", x, y))
 
-	fmt.Printf("Start: %d:%d\n", x, y)
-
+	// walk into directions until a wall is hit and then
+	// change the direction until the matrix is left
 	direction := "up"
 	i := 0
-
-	for matrix.Exists(x, y) && i < 4096 {
-		oldX, oldY := x, y
-		x, y = matrix.WalkInDirection(x, y, DIRECTIONS[direction], WALL)
-		visited.Fill(x, y, oldX, oldY, VISITED)
-		direction = getNextDirection(direction)
-		if x == -1 && y == -1 {
-			fmt.Printf("Exit found at %d:%d\n", x, y)
-		} else {
-			fmt.Printf("Wall at: %d:%d\n", x, y)
-		}
+	const MAX_ITERATIONS = 4096
+	for matrix.Exists(x, y) && i < MAX_ITERATIONS {
 		i++
+		oldX, oldY := x, y
+		// continue walking until next wall is found
+		x, y = matrix.WalkInDirection(x, y, DIRECTIONS[direction], WALL)
+		// mark the visited positions
+		visited.Fill(x, y, oldX, oldY, VISITED)
+		// change direction
+		direction = getNextDirection(direction)
+		slog.Debug(fmt.Sprintf("Walked to: %d:%d %d:%d\n", oldX, oldY, x, y))
+		if x != -1 && y != -1 {
+			slog.Debug(fmt.Sprintf("Wall at: %d:%d\n", x, y))
+		}
 	}
 
-	fmt.Println(visited.String() + "\n")
+	slog.Info(visited.String())
+	slog.Info(fmt.Sprintf("Exit found at %d:%d\n", x, y))
+
 }
