@@ -72,19 +72,29 @@ func iterate(in []string) []string {
 }
 
 func processInputPartOne(input []string) {
-	processInput(input, 10)
+	processInput(input, 25)
 	// turns out running it 75 times is memory intensive
 	// redesign to stream
 	// processInput(input, 75)
 }
 
 func processInput(input []string, iterationsCount int) {
-	next := input
-	for i := 0; i < iterationsCount; i++ {
-		next = iterate(next)
-		fmt.Printf("Iteration %d: %v\n", i, next)
-		// fmt.Printf("Iteration %d: %d\n", i, len(next))
+	totalCount := 0
+	const MAX_ITERATIONS = 1024
+	c := 0
+	for i, val := range input {
+		c++
+		if c > MAX_ITERATIONS {
+			panic("MAXIMUM ITERATIONS")
+		}
+		next := []string{val}
+		// iterating number by numebr is the same as iterataing the whole set
+		for j := 0; j < iterationsCount; j++ {
+			next = iterate(next)
+			fmt.Printf("Iteration %d/%d (count: %d)\n", i, j, len(next))
+		}
+		totalCount += len(next)
 	}
 
-	fmt.Printf("# of stones: %d\n", len(next))
+	fmt.Printf("Total count: %d\n", totalCount)
 }
