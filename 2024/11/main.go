@@ -81,13 +81,14 @@ func processInputPartOne(input []string) {
 func processInput(input []string, iterationsCount int) {
 	totalCount := 0
 	const MAX_ITERATIONS = 1024
+	var next []string
 	c := 0
 	for i, val := range input {
 		c++
 		if c > MAX_ITERATIONS {
 			panic("MAXIMUM ITERATIONS")
 		}
-		next := []string{val}
+		next = []string{val}
 		// iterating number by numebr is the same as iterataing the whole set
 		for j := 0; j < iterationsCount; j++ {
 			next = iterate(next)
