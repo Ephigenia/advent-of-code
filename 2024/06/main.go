@@ -7,7 +7,6 @@ import (
 	"path"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 const WALL = "#"
@@ -69,12 +68,10 @@ func processInputPartOne(matrix *lib.StringMatrix) {
 	fmt.Println(fmt.Sprintf("Start: %d:%d\n", x, y))
 	matrix.Fill(x, y, x, y, EMPTY) // remove starting margin
 
-	matrix.Fill(7, 7, 7, 10, VISITED)
-
 	// walk into directions until a wall is hit and then
 	// change the direction until the matrix is left
 	visited := matrix.Clone()
-	direction := "left"
+	direction := "up"
 	found := true
 	i := 0
 	const MAX_ITERATIONS = 4096
@@ -96,7 +93,6 @@ func processInputPartOne(matrix *lib.StringMatrix) {
 
 	fmt.Println(matrix.String() + "\n")
 	fmt.Println(visited.String())
-	spew.Dump(visited.FindAll(VISITED))
 	fmt.Printf("visited nodes: %d\n", len(visited.FindAll(VISITED)))
 	fmt.Println(fmt.Sprintf("Exit found at %d:%d", x, y))
 }
