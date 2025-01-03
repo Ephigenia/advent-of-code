@@ -88,7 +88,7 @@ func processInputPartOne(matrix *lib.StringMatrix) {
 		visited.Fill(x, y, oldX, oldY, VISITED)
 		// change direction
 		direction = getNextDirection(direction)
-		slog.Debug(fmt.Sprintf("Walked to: %d:%d %d:%d\n", oldX, oldY, x, y))
+		slog.Info(fmt.Sprintf("Walked to: %d:%d %d:%d\n", oldX, oldY, x, y))
 		if x != -1 && y != -1 {
 			slog.Debug(fmt.Sprintf("Wall at: %d:%d\n", x, y))
 		}
