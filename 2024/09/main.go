@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -25,19 +24,31 @@ func main() {
 	if err != nil {
 		lib.ExitWithError(err)
 	}
-	input := parseInput(rawInput)
-	fmt.Printf("Input: %v\n", input)
-	printMap(input)
-	// processInputPartOne(input)
+	fmt.Printf("Raw input %s\n", rawInput)
+
+	disk := parseInput(rawInput)
+	fmt.Printf("%s\n", disk.String())
 }
 
-func parseInput(inputs string) []int {
-	all := []int{}
-	for i := 0; i < len(inputs); i++ {
-		c, _ := strconv.Atoi(string(inputs[i]))
-		all = append(all, c)
+func parseInput(inputs string) Disk {
+	all := lib.ArrStrToInt(strings.Split(inputs, ""))
+	disk := Disk{}
+
+	for i := 0; i < len(all); i++ {
+		if i%2 == 1 {
+			continue
+		}
+		free := 0
+		if i < len(all)-1 {
+			free = all[i+1]
+		}
+		disk.addFile(File{
+			id:     all[i] / 2,
+			blocks: all[i],
+			free:   free,
+		})
 	}
-	return all
+	return disk
 }
 
 type File struct {
@@ -58,38 +69,11 @@ func (d *Disk) getFiles() []File {
 	return d.files
 }
 
-func printMap(m []int) {
-	disk := Disk{}
-
-	for i := 0; i < len(m); i++ {
-		if i%2 == 1 {
-			continue
-		}
-		fmt.Printf("i: %d\n", i)
-		free := 0
-		if i < len(m)-1 {
-			free = m[i+1]
-		}
-		disk.addFile(File{
-			id:     m[i] / 2,
-			blocks: m[i],
-			free:   free,
-		})
+func (d *Disk) String() string {
+	str := ""
+	for _, file := range d.getFiles() {
+		str += strings.Repeat(strconv.Itoa(file.id), file.blocks)
+		str += strings.Repeat(".", file.free)
 	}
-
-	spew.Dump(disk)
-
-	parts := []string{}
-	for _, file := range disk.getFiles() {
-		parts = append(parts, strings.Repeat(strconv.Itoa(file.id), file.blocks))
-		parts = append(parts, strings.Repeat(".", file.free))
-	}
-
-	fmt.Printf("%s\n", strings.Join(parts, ""))
-
+	return str
 }
-
-// func processInputPartOne(inputs []int) {
-// 	spew.Dump(inputs)
-// 	printMap(inputs)
-// }
