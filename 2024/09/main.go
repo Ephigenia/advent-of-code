@@ -54,6 +54,10 @@ func (d *Disk) addFile(f File) {
 	d.files = append(d.files, f)
 }
 
+func (d *Disk) getFiles() []File {
+	return d.files
+}
+
 func printMap(m []int) {
 	disk := Disk{}
 
@@ -75,25 +79,12 @@ func printMap(m []int) {
 
 	spew.Dump(disk)
 
-	mode := 1
 	parts := []string{}
-	id := 0
-	for i := 0; i < len(m); i++ {
-		part := ""
-		length := m[i]
-		if mode == 0 { // free space
-			part = strings.Repeat(".", length)
-		} else { // blocked space
-			part = strings.Repeat(strconv.Itoa(id), length)
-		}
-		parts = append(parts, part)
-		if i%2 == 0 {
-			mode = 0
-		} else {
-			id++
-			mode = 1
-		}
+	for _, file := range disk.getFiles() {
+		parts = append(parts, strings.Repeat(strconv.Itoa(file.id), file.blocks))
+		parts = append(parts, strings.Repeat(".", file.free))
 	}
+
 	fmt.Printf("%s\n", strings.Join(parts, ""))
 
 }
