@@ -38,12 +38,13 @@ func parseInput(inputs string) Disk {
 		if i%2 == 1 {
 			continue
 		}
+		id := i / 2
 		free := 0
 		if i < len(all)-1 {
 			free = all[i+1]
 		}
 		disk.addFile(File{
-			id:     all[i] / 2,
+			id:     id,
 			blocks: all[i],
 			free:   free,
 		})
