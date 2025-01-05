@@ -7,6 +7,7 @@ import (
 	"path"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
+	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -25,4 +26,11 @@ func main() {
 
 	matrix := lib.NewIntMatrixFromString(rawInput)
 	fmt.Printf("%v\n", matrix)
+	partOne(matrix)
+}
+
+func partOne(matrix *lib.IntMatrix) {
+	// find starting positions
+	startPositions := matrix.FindAll(0)
+	spew.Dump(startPositions)
 }

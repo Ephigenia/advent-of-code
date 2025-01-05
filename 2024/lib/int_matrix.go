@@ -45,6 +45,12 @@ func (m *IntMatrix) Get(x, y int) int {
 	}
 	return m.data[y][x]
 }
+func (m *IntMatrix) GetWidth() int {
+	return m.width
+}
+func (m *IntMatrix) GetHeight() int {
+	return m.height
+}
 
 func (r *IntMatrix) String() string {
 	lines := make([]string, r.height)
@@ -52,4 +58,16 @@ func (r *IntMatrix) String() string {
 		lines[y] = ArrIntToStr(r.data[y])
 	}
 	return strings.Join(lines, lf)
+}
+
+func (r *IntMatrix) FindAll(v int) [][]int {
+	found := make([][]int, 0)
+	for y := 0; y < r.height; y++ {
+		for x := 0; x < r.width; x++ {
+			if r.Get(x, y) == v {
+				found = append(found, []int{x, y})
+			}
+		}
+	}
+	return found
 }
