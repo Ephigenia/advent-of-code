@@ -29,8 +29,29 @@ func main() {
 	partOne(matrix)
 }
 
+func trackback(matrix *lib.IntMatrix, x, y int) {
+	for direction := range lib.DIRECTIONS {
+		cur := matrix.Get(x, y)
+		x, y := matrix.MovePosition(x, y, direction)
+		if !matrix.Exists(x, y) {
+			continue
+		}
+		next := matrix.Get(x, y)
+		diff := next - cur
+		if diff != 1 {
+			continue
+		}
+		fmt.Printf("found %d at %d,%d %s\n", next, x, y, direction)
+	}
+}
+
 func partOne(matrix *lib.IntMatrix) {
 	// find starting positions
 	startPositions := matrix.FindAll(0)
+	// iterate over all start positions and find trails
+	for posI, pos := range startPositions {
+		fmt.Printf("#%d start at %v\n", posI, pos)
+		trackback(matrix, pos[0], pos[1])
+	}
 	spew.Dump(startPositions)
 }

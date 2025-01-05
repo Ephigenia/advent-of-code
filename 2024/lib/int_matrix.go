@@ -4,6 +4,13 @@ import (
 	"strings"
 )
 
+var DIRECTIONS = map[string][]int{
+	"up":    {0, -1}, // up
+	"down":  {0, 1},  // down
+	"right": {1, 0},  // right
+	"left":  {-1, 0}, // left
+}
+
 type IntMatrix struct {
 	width  int
 	height int
@@ -70,4 +77,9 @@ func (r *IntMatrix) FindAll(v int) [][]int {
 		}
 	}
 	return found
+}
+
+func (m IntMatrix) MovePosition(x, y int, direction string) (int, int) {
+	dir := DIRECTIONS[direction]
+	return x + dir[0], y + dir[1]
 }
