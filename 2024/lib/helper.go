@@ -108,6 +108,14 @@ func ArrIntAbs(input []int) []int {
 	})
 }
 
+func ArrIntToStr(input []int) string {
+	ret := ""
+	for _, v := range input {
+		ret += strconv.Itoa(v)
+	}
+	return ret
+}
+
 func ArrStrToInt(input []string) []int {
 	var output []int
 	for _, v := range input {
