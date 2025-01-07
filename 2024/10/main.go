@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"strings"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -30,51 +28,42 @@ func main() {
 	partOne(matrix)
 }
 
-func trackback(matrix *lib.IntMatrix, x, y int) [][]int {
-	found := make([][]int, 0)
-	visited := matrix.Clone()
+func walk(matrix, visited *lib.IntMatrix, prev, x, y int) int {
+	cur := matrix.Get(x, y)
 
+	if cur == -1 {
+		return 0
+	}
+	if cur-prev != 1 {
+		return 0
+	}
+
+	if cur == 9 && prev == 8 {
+		if visited.Get(x, y) == 10 {
+			return 0
+		}
+		visited.Set(x, y, 10)
+		return 1
+	}
+
+	ans := 0
 	for direction := range lib.DIRECTIONS {
-		cur := matrix.Get(x, y)
 		x, y := matrix.MovePosition(x, y, direction)
-
-		if !matrix.Exists(x, y) {
-			continue
-		}
-		if cur == 9 {
-			continue
-		}
-
-		if visited.Get(x, y) == 1 {
-			continue
-		}
-		visited.Set(x, y, 1)
-
-		if matrix.Get(x, y)-cur != 1 {
-			continue
-		}
-
-		found = append(found, trackback(matrix, x, y)...)
-		found = append(found, []int{x, y})
+		ans += walk(matrix, visited, cur, x, y)
 	}
-	return found
-}
-
-func formatPath(path [][]int) string {
-	parts := make([]string, len(path))
-	for i, pos := range path {
-		parts[i] = fmt.Sprintf("%d:%d", pos[0], pos[1])
-	}
-	return strings.Join(parts, " -> ")
+	return ans
 }
 
 func partOne(matrix *lib.IntMatrix) {
 	// find starting positions
 	startPositions := matrix.FindAll(0)
 	// iterate over all start positions and find trails
+	sum := 0
 	for posI, pos := range startPositions {
-		path := trackback(matrix, pos[0], pos[1])
-		fmt.Printf("#%d start at %v: %s\n", posI, pos, formatPath(path))
+		visited := matrix.Clone()
+		count := walk(matrix, visited, -1, pos[0], pos[1])
+		fmt.Printf("#%d trail head %d:%d: %d\n", posI, pos[0], pos[1], count)
+		sum += count
 	}
-	spew.Dump(startPositions)
+	fmt.Printf("Sum %d\n", sum)
 }
