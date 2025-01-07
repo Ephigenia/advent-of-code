@@ -5,10 +5,10 @@ import (
 )
 
 var DIRECTIONS = map[string][]int{
-	"up":    {0, -1}, // up
-	"down":  {0, 1},  // down
-	"right": {1, 0},  // right
-	"left":  {-1, 0}, // left
+	"up":    {0, -1},
+	"right": {1, 0},
+	"down":  {0, 1},
+	"left":  {-1, 0},
 }
 
 type IntMatrix struct {
@@ -82,4 +82,13 @@ func (r *IntMatrix) FindAll(v int) [][]int {
 func (m IntMatrix) MovePosition(x, y int, direction string) (int, int) {
 	dir := DIRECTIONS[direction]
 	return x + dir[0], y + dir[1]
+}
+
+func (m IntMatrix) Clone() *IntMatrix {
+	clone := NewIntMatrix(m.width, m.height)
+	clone.data = make([][]int, m.height)
+	for y := 0; y < m.height; y++ {
+		clone.data[y] = make([]int, m.width)
+	}
+	return clone
 }
