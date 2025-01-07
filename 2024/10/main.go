@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
 )
@@ -28,30 +29,47 @@ func main() {
 	partOne(matrix)
 }
 
-func walk(matrix, visited *lib.IntMatrix, prev, x, y int) int {
-	cur := matrix.Get(x, y)
-
+func checkStep(cur, prev int) bool {
 	if cur == -1 {
-		return 0
+		return false
 	}
 	if cur-prev != 1 {
-		return 0
+		return false
+	}
+
+	return true
+}
+
+func walk(matrix, visited *lib.IntMatrix, prev, x, y int) [][]int {
+	path := [][]int{}
+	cur := matrix.Get(x, y)
+
+	if !checkStep(cur, prev) {
+		return path
 	}
 
 	if cur == 9 && prev == 8 {
 		if visited.Get(x, y) == 10 {
-			return 0
+			return path
 		}
 		visited.Set(x, y, 10)
-		return 1
+		path = append(path, []int{x, y})
+		return path
 	}
 
-	ans := 0
 	for direction := range lib.DIRECTIONS {
 		x, y := matrix.MovePosition(x, y, direction)
-		ans += walk(matrix, visited, cur, x, y)
+		path = append(path, walk(matrix, visited, cur, x, y)...)
 	}
-	return ans
+	return path
+}
+
+func formatPath(path [][]int) string {
+	parts := make([]string, len(path))
+	for i, pos := range path {
+		parts[i] = fmt.Sprintf("%d:%d ", pos[0], pos[1])
+	}
+	return strings.Join(parts, ",")
 }
 
 func partOne(matrix *lib.IntMatrix) {
@@ -59,11 +77,21 @@ func partOne(matrix *lib.IntMatrix) {
 	startPositions := matrix.FindAll(0)
 	// iterate over all start positions and find trails
 	sum := 0
+
+	uniquePaths := []string{}
+
 	for posI, pos := range startPositions {
 		visited := matrix.Clone()
-		count := walk(matrix, visited, -1, pos[0], pos[1])
-		fmt.Printf("#%d trail head %d:%d: %d\n", posI, pos[0], pos[1], count)
-		sum += count
+		path := walk(matrix, visited, -1, pos[0], pos[1])
+		fmt.Printf("#%d trail head %d:%d: %d\n", posI, pos[0], pos[1], len(path))
+
+		pathStr := formatPath(path)
+		if lib.ArrStrIndexOf(uniquePaths, pathStr) == -1 {
+			uniquePaths = append(uniquePaths, pathStr)
+		}
+
+		sum += len(path)
 	}
-	fmt.Printf("Sum %d\n", sum)
+	fmt.Printf("\nSum %d\n", sum)
+	fmt.Printf("\nUnique Paths: %d\n", len(uniquePaths))
 }
