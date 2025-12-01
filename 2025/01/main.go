@@ -65,15 +65,12 @@ func processInputPartOne(input string) {
 
 	position := startPosition
 
-	items := []InputItem{}
 	for i, line := range lines {
 		newItems := convertInputLineToItem(line)
-		items = append(items, newItems...)
 
 		newPosition := calculateNewPosition(position, newItems[0].direction, newItems[0].offset)
 		spew.Dump(i, position, newItems[0], newPosition)
 	}
-	spew.Dump(items)
 }
 
 func calculateNewPosition(position int, direction string, offset int) int {
