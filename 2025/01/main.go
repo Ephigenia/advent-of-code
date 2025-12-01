@@ -83,6 +83,7 @@ func processInputPartOne(input string) {
 	fmt.Printf("hits: %d\n", hit)
 }
 
+// TODO support offsets above 99
 func calculateNewPosition(position int, direction string, offset int) int {
 	var newPosition int
 	switch direction {
