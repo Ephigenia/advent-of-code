@@ -31,7 +31,7 @@ func main() {
 
 type InputItem struct {
 	direction string
-	count     int
+	offset    int
 }
 
 func validateInputLine(line string) error {
@@ -53,7 +53,7 @@ func convertInputLineToItem(line string) []InputItem {
 	return []InputItem{
 		{
 			direction: line[0:1],
-			count:     value,
+			offset:    value,
 		},
 	}
 }
@@ -61,10 +61,21 @@ func convertInputLineToItem(line string) []InputItem {
 func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
 
+	startPosition := 0
+
+	position := startPosition
+
 	items := []InputItem{}
-	for _, line := range lines {
+	for i, line := range lines {
 		newItems := convertInputLineToItem(line)
 		items = append(items, newItems...)
+
+		newPosition := calculateNewPosition(position, newItems[0].direction, newItems[0].offset)
+		spew.Dump(i, position, newItems[0], newPosition)
 	}
 	spew.Dump(items)
+}
+
+func calculateNewPosition(position int, direction string, offset int) int {
+	return position + offset
 }
