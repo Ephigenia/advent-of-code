@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path"
 	"regexp"
@@ -9,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/Ephigenia/advent-of-code/2025/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -61,18 +61,43 @@ func convertInputLineToItem(line string) []InputItem {
 func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
 
-	startPosition := 0
+	startPosition := 50
 
 	position := startPosition
+	hit := 0
+
+	// fmt.Printf("L86 %d\n", calculateNewPosition(startPosition, "L", 68))
+	// fmt.Printf("L30 %d\n", calculateNewPosition(82, "L", 30))
+	// fmt.Printf("L30 %d\n", calculateNewPosition(52, "R", 48))
 
 	for i, line := range lines {
 		newItems := convertInputLineToItem(line)
 
-		newPosition := calculateNewPosition(position, newItems[0].direction, newItems[0].offset)
-		spew.Dump(i, position, newItems[0], newPosition)
+		position = calculateNewPosition(position, newItems[0].direction, newItems[0].offset)
+		if position == 0 {
+			hit++
+		}
+		fmt.Printf("#%d %s\t%d   %d\n", i, line, position, hit)
 	}
+
+	fmt.Printf("hits: %d\n", hit)
 }
 
 func calculateNewPosition(position int, direction string, offset int) int {
-	return position + offset
+	var newPosition int
+	switch direction {
+	case "L":
+		newPosition = position - offset
+	case "R":
+		newPosition = position + offset
+	default:
+		panic("invalid direction")
+	}
+
+	if newPosition < 0 {
+		newPosition = 99 + newPosition + 1
+	} else if newPosition > 99 {
+		newPosition = newPosition - 99 - 1
+	}
+	return newPosition
 }
