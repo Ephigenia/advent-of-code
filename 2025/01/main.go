@@ -1,4 +1,4 @@
-package aoc_2025_01
+package main
 
 import (
 	"errors"
