@@ -61,10 +61,6 @@ func processInputPartOne(input string) {
 	position := startPosition
 	hit := 0
 
-	// fmt.Printf("L86 %d\n", calculateNewPosition(startPosition, "L", 68))
-	// fmt.Printf("L30 %d\n", calculateNewPosition(82, "L", 30))
-	// fmt.Printf("L30 %d\n", calculateNewPosition(52, "R", 48))
-
 	for i, line := range lines {
 		newItems := convertInputLineToItem(line)
 
@@ -79,21 +75,24 @@ func processInputPartOne(input string) {
 }
 
 // TODO support offsets above 99
-func calculateNewPosition(position int, direction string, offset int) int {
+func calculateNewPosition(startPosition int, direction string, offset int) int {
 	var newPosition int
 	switch direction {
 	case "L":
-		newPosition = position - offset
+		newPosition = startPosition - offset
 	case "R":
-		newPosition = position + offset
+		newPosition = startPosition + offset
 	default:
 		panic("invalid direction")
 	}
 
-	if newPosition < 0 {
-		newPosition = 99 + newPosition + 1
-	} else if newPosition > 99 {
-		newPosition = newPosition - 99 - 1
+	min := 0
+	max := 99
+
+	if newPosition < min {
+		newPosition = max + newPosition + 1
+	} else if newPosition > max {
+		newPosition = newPosition - max - 1
 	}
 	return newPosition
 }

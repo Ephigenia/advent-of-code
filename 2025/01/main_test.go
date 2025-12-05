@@ -27,5 +27,15 @@ func TestCalculateNewPosition(t *testing.T) {
 	assert.Equal(t, calculateNewPosition(52, "R", 48), 0)
 	assert.Equal(t, calculateNewPosition(0, "L", 5), 95)
 	assert.Equal(t, calculateNewPosition(95, "R", 60), 55)
-
+	assert.Equal(t, calculateNewPosition(55, "L", 55), 0)
+	assert.Equal(t, calculateNewPosition(0, "L", 1), 99)
+	assert.Equal(t, calculateNewPosition(99, "L", 99), 0)
+	assert.Equal(t, calculateNewPosition(0, "R", 14), 14)
+	assert.Equal(t, calculateNewPosition(0, "L", 82), 32)
 }
+
+func TestIt(t *testing.T) {
+	assert.Equal(t, 32, calculateNewPosition(14, "L", 82))
+}
+
+// 14 + L82 = 14 - 82 = -68 -> 99 - 68 + 1 = 32
