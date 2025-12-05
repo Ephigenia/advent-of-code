@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math"
 	"os"
 	"path"
 	"regexp"
@@ -92,7 +93,9 @@ func calculateNewPosition(startPosition int, direction string, offset int) int {
 	if newPosition < min {
 		newPosition = max + newPosition + 1
 	} else if newPosition > max {
-		newPosition = newPosition - max - 1
+		floor := math.Floor(float64(newPosition) / float64(max))
+		rest := floor * float64(max+1)
+		newPosition = int(rest) - max - 1
 	}
 	return newPosition
 }

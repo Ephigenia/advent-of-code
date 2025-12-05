@@ -38,6 +38,11 @@ func TestLBelowZero(t *testing.T) {
 	assert.Equal(t, 32, calculateNewPosition(14, "L", 82))
 }
 
+// TODO solve the problem with multiple rotations
+func TestRAboveMaxMultiple(t *testing.T) {
+	assert.Equal(t, 2, calculateNewPosition(0, "R", 300))
+}
+
 func TestRAboveMax(t *testing.T) {
 	assert.Equal(t, 55, calculateNewPosition(95, "R", 60))
 }
