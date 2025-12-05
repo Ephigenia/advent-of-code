@@ -1,4 +1,4 @@
-package main
+package aoc_2025_01
 
 import (
 	"errors"
@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Ephigenia/advent-of-code/2025/lib"
+	"github.com/Ephigenia/advent-of-code/2024/lib"
 )
 
 func main() {
@@ -27,11 +27,6 @@ func main() {
 	}
 
 	processInputPartOne(rawInput)
-}
-
-type InputItem struct {
-	direction string
-	offset    int
 }
 
 func validateInputLine(line string) error {

@@ -1,4 +1,4 @@
-package lib
+package aoc_2025_01
 
 import (
 	"fmt"

@@ -4,3 +4,6 @@ ARGS :=
 
 run:
 	cd $(YEAR)/$(DAY) && go run main.go $(ARGS)
+
+test:
+	cd $(YEAR)/$(DAY) && go test -v ./... $(ARGS)
