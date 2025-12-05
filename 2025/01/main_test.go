@@ -31,7 +31,7 @@ func TestCalculateNewPosition(t *testing.T) {
 	assert.Equal(t, calculateNewPosition(0, "L", 1), 99)
 	assert.Equal(t, calculateNewPosition(99, "L", 99), 0)
 	assert.Equal(t, calculateNewPosition(0, "R", 14), 14)
-	assert.Equal(t, calculateNewPosition(0, "L", 82), 32)
+	assert.Equal(t, calculateNewPosition(14, "L", 82), 32)
 }
 
 func TestIt(t *testing.T) {
