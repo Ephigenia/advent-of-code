@@ -37,5 +37,3 @@ func TestCalculateNewPosition(t *testing.T) {
 func TestIt(t *testing.T) {
 	assert.Equal(t, 32, calculateNewPosition(14, "L", 82))
 }
-
-// 14 + L82 = 14 - 82 = -68 -> 99 - 68 + 1 = 32
