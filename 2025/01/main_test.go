@@ -34,6 +34,10 @@ func TestCalculateNewPosition(t *testing.T) {
 	assert.Equal(t, calculateNewPosition(14, "L", 82), 32)
 }
 
-func TestIt(t *testing.T) {
+func TestLBelowZero(t *testing.T) {
 	assert.Equal(t, 32, calculateNewPosition(14, "L", 82))
+}
+
+func TestRAboveMax(t *testing.T) {
+	assert.Equal(t, 55, calculateNewPosition(95, "R", 60))
 }
