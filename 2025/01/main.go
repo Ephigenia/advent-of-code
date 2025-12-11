@@ -65,7 +65,7 @@ func processInputPartOne(input string) {
 	for i, line := range lines {
 		newItems := convertInputLineToItem(line)
 
-		position = calculateNewPosition(position, newItems[0].direction, newItems[0].offset)
+		position, _ = calculateNewPosition(position, newItems[0].direction, newItems[0].offset)
 		if position == 0 {
 			hit++
 		}
@@ -75,8 +75,22 @@ func processInputPartOne(input string) {
 	fmt.Printf("hits: %d\n", hit)
 }
 
+const min = 0
+const max = 99
+
+func calculateTotalRotations(newPosition int) float64 {
+	if newPosition < min {
+		return -math.Floor(float64(newPosition) / float64(max))
+	}
+	return math.Floor(float64(newPosition) / float64(max))
+}
+
 // TODO support offsets above 99
-func calculateNewPosition(startPosition int, direction string, offset int) int {
+func calculateNewPosition(
+	startPosition int,
+	direction string,
+	offset int,
+) (int, int) {
 	var newPosition int
 	switch direction {
 	case "L":
@@ -87,15 +101,15 @@ func calculateNewPosition(startPosition int, direction string, offset int) int {
 		panic("invalid direction")
 	}
 
-	min := 0
-	max := 99
-
+	fullRotations := calculateTotalRotations(newPosition)
 	if newPosition < min {
-		newPosition = max + newPosition + 1
+		newPosition = int(fullRotations)*max + newPosition + 1
 	} else if newPosition > max {
-		floor := math.Floor(float64(newPosition) / float64(max))
-		rest := floor * float64(max+1)
-		newPosition = int(rest) - max - 1
+		newPosition = newPosition - int(fullRotations)*max - 1
 	}
-	return newPosition
+
+	// 95 + 65 = 160
+	//
+
+	return newPosition, int(fullRotations)
 }
