@@ -23,6 +23,7 @@ func TestConvertInputLineToItem(t *testing.T) {
 
 func TestCalculateNewPosition(t *testing.T) {
 	dial := NewSafeDial(50)
+
 	dial.Rotate("L", 68)
 	assert.Equal(t, 82, dial.position)
 
@@ -52,13 +53,13 @@ func TestCalculateNewPosition(t *testing.T) {
 
 	dial.Rotate("L", 82)
 	assert.Equal(t, 32, dial.position)
-
 }
 
-// func TestRotationR60To55(t *testing.T) {
-// 	assert.Equal(t, 55, calculateNewPosition(95, "R", 60))
-// 	assert.Equal(t, 55, dial.position)
-// }
+func TestRotationR60To55(t *testing.T) {
+	dial := NewSafeDial(95)
+	dial.Rotate("R", 60)
+	assert.Equal(t, 55, dial.position)
+}
 
 // func TestRotationR159To55(t *testing.T) {
 // 	dial := NewSafeDial(50)
