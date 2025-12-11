@@ -69,12 +69,13 @@ func processInputPartOne(input string) {
 		if position == 0 {
 			hit++
 		}
-		fmt.Printf("#%d\t%s%d\t%d -> %d\t\t%d\n",
+		fmt.Printf("#%d\t%s%d\t%d -> %d\t\t%t\t%d\n",
 			i,
 			instruction[0].direction,
 			instruction[0].offset,
 			startPosition,
 			position,
+			position == 0,
 			hit,
 		)
 		startPosition = position
@@ -92,6 +93,9 @@ func calculateTotalRotations(newPosition int) float64 {
 	}
 	return math.Floor(float64(newPosition) / float64(max))
 }
+
+// tried 46
+// tried 45
 
 // TODO support offsets above 99
 func calculateNewPosition(
