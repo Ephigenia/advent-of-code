@@ -66,7 +66,7 @@ func processInputPartOne(input string) {
 		instruction := convertInputLineToItem(line)
 
 		position = calculateNewPosition(position, instruction[0].direction, instruction[0].offset)
-		if position == 0 {
+		if position%max == 0 {
 			hit++
 		}
 		fmt.Printf("#%d\t%s%d\t%d -> %d\t\t%t\t%d\n",
@@ -85,7 +85,7 @@ func processInputPartOne(input string) {
 }
 
 const min = 0
-const max = 99
+const max = 100
 
 func calculateTotalRotations(newPosition int) float64 {
 	if newPosition < min {
@@ -96,6 +96,7 @@ func calculateTotalRotations(newPosition int) float64 {
 
 // tried 46
 // tried 45
+// 1026 --- don't know
 
 // TODO support offsets above 99
 func calculateNewPosition(
@@ -115,9 +116,9 @@ func calculateNewPosition(
 
 	fullRotations := calculateTotalRotations(newPosition)
 	if newPosition < min {
-		newPosition = int(fullRotations)*max + newPosition + 1
+		newPosition = int(fullRotations)*max + newPosition
 	} else if newPosition > max {
-		newPosition = newPosition - int(fullRotations)*max - 1
+		newPosition = newPosition - int(fullRotations)*max
 	}
 
 	return newPosition
