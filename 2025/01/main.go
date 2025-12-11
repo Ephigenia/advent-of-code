@@ -66,7 +66,7 @@ func processInputPartOne(input string) {
 		newItems := convertInputLineToItem(line)
 
 		position, _ = calculateNewPosition(position, newItems[0].direction, newItems[0].offset)
-		if position == 0 {
+		if position == 0 && newItems[0].direction == "L" {
 			hit++
 		}
 		fmt.Printf("#%d %s\t%d   %d\n", i, line, position, hit)
