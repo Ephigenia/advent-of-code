@@ -43,9 +43,7 @@ func convertInputLineToItem(line string) []InputItem {
 	if err := validateInputLine(line); err != nil {
 		panic(err)
 	}
-
 	value, _ := strconv.Atoi(line[1:])
-
 	return []InputItem{
 		{
 			direction: line[0:1],
@@ -57,69 +55,76 @@ func convertInputLineToItem(line string) []InputItem {
 func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
 
-	startPosition := 50
-
-	position := startPosition
 	hit := 0
 
-	for i, line := range lines {
-		instruction := convertInputLineToItem(line)
+	initialPosition := 50
+	dial := NewSafeDial(initialPosition)
 
-		position = calculateNewPosition(position, instruction[0].direction, instruction[0].offset)
-		if position%max == 0 {
+	for _, line := range lines {
+		instruction := convertInputLineToItem(line)
+		direction := instruction[0].direction
+		offset := instruction[0].offset
+
+		// new implementation
+		dial.Rotate(direction, offset)
+		if dial.IsZeroPosition() {
 			hit++
 		}
-		fmt.Printf("#%d\t%s%d\t%d -> %d\t\t%t\t%d\n",
-			i,
-			instruction[0].direction,
-			instruction[0].offset,
-			startPosition,
-			position,
-			position == 0,
-			hit,
-		)
-		startPosition = position
 	}
 
 	fmt.Printf("hits: %d\n", hit)
 }
 
-const min = 0
-const max = 100
-
-func calculateTotalRotations(newPosition int) float64 {
-	if newPosition < min {
-		return -math.Floor(float64(newPosition) / float64(max))
-	}
-	return math.Floor(float64(newPosition) / float64(max))
+type SafeDial struct {
+	min             int // minimum position
+	max             int // max position
+	initialPosition int // initial start position
+	position        int // current position
+	lastPosition    int // last position before last rotation
 }
 
-// tried 46
-// tried 45
-// 1026 --- don't know
+func NewSafeDial(initialPosition int) *SafeDial {
+	return &SafeDial{
+		min:             0,
+		max:             100,
+		initialPosition: initialPosition,
+		position:        initialPosition,
+		lastPosition:    initialPosition,
+	}
+}
 
-// TODO support offsets above 99
-func calculateNewPosition(
-	startPosition int,
-	direction string,
-	offset int,
-) int {
-	var newPosition int
+func (s *SafeDial) IsZeroPosition() bool {
+	return s.position%(s.max-1) == 0
+}
+
+func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
+	s.lastPosition = s.position
+
 	switch direction {
 	case "L":
-		newPosition = startPosition - offset
+		s.position = s.position - offset
 	case "R":
-		newPosition = startPosition + offset
+		s.position = s.position + offset
 	default:
 		panic("invalid direction")
 	}
 
-	fullRotations := calculateTotalRotations(newPosition)
-	if newPosition < min {
-		newPosition = int(fullRotations)*max + newPosition
-	} else if newPosition > max {
-		newPosition = newPosition - int(fullRotations)*max
+	fullRotations := s.calculateTotalRotations(s.position)
+	if s.position < s.min {
+		s.position = int(fullRotations)*s.max + s.position
+	} else if s.position > s.max {
+		s.position = s.position - int(fullRotations)*s.max
 	}
 
-	return newPosition
+	if s.position == s.max {
+		s.position = 0
+	}
+	return s
+}
+
+func (s *SafeDial) calculateTotalRotations(newPosition int) float64 {
+	if newPosition < s.min {
+		return -math.Floor(float64(newPosition) / float64(s.max))
+	}
+	return math.Floor(float64(newPosition) / float64(s.max))
 }
