@@ -63,13 +63,21 @@ func processInputPartOne(input string) {
 	hit := 0
 
 	for i, line := range lines {
-		newItems := convertInputLineToItem(line)
+		instruction := convertInputLineToItem(line)
 
-		position, _ = calculateNewPosition(position, newItems[0].direction, newItems[0].offset)
-		if position == 0 && newItems[0].direction == "L" {
+		position = calculateNewPosition(position, instruction[0].direction, instruction[0].offset)
+		if position == 0 {
 			hit++
 		}
-		fmt.Printf("#%d %s\t%d   %d\n", i, line, position, hit)
+		fmt.Printf("#%d\t%s%d\t%d -> %d\t\t%d\n",
+			i,
+			instruction[0].direction,
+			instruction[0].offset,
+			startPosition,
+			position,
+			hit,
+		)
+		startPosition = position
 	}
 
 	fmt.Printf("hits: %d\n", hit)
@@ -90,7 +98,7 @@ func calculateNewPosition(
 	startPosition int,
 	direction string,
 	offset int,
-) (int, int) {
+) int {
 	var newPosition int
 	switch direction {
 	case "L":
@@ -108,8 +116,5 @@ func calculateNewPosition(
 		newPosition = newPosition - int(fullRotations)*max - 1
 	}
 
-	// 95 + 65 = 160
-	//
-
-	return newPosition, int(fullRotations)
+	return newPosition
 }
