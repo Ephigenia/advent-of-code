@@ -91,7 +91,9 @@ func processInputPartTwo(input string) {
 		dial.Rotate(direction, offset)
 	}
 	// 5958 is wrong
-	// 5541 ??
+	// 5541 is wrong
+	// 4136 wrong
+	// 2426
 	fmt.Printf("part two: %d\n", dial.zeroCrossed)
 }
 
@@ -133,14 +135,17 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 
 	fullRotations := s.calculateTotalRotations(s.position)
 	if s.position < s.min {
-		s.zeroCrossed += int(fullRotations)
+		s.zeroCrossed++
 		s.position = int(fullRotations)*s.max + s.position
 	} else if s.position > s.max {
-		s.zeroCrossed += int(fullRotations)
+		s.zeroCrossed++
 		s.position = s.position - int(fullRotations)*s.max
 	}
 
+	fmt.Printf("Rotated %s%d: from %d to %d (full rotations: %.0f, zero crossed: %d)\n", direction, offset, s.lastPosition, s.position, fullRotations, s.zeroCrossed)
+
 	if s.position == s.max {
+		s.zeroCrossed++
 		s.position = 0
 	}
 	return s
