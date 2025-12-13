@@ -61,31 +61,8 @@ func TestRotationR60To55(t *testing.T) {
 	assert.Equal(t, 55, dial.position)
 }
 
-// func TestRotationR159To55(t *testing.T) {
-// 	dial := NewSafeDial(50)
-// 	assert.Equal(t, 55, calculateNewPosition(95, "R", 159))
-// }
-
-// func TestRotationL82to32(t *testing.T) {
-// 	dial := NewSafeDial(50)
-// 	assert.Equal(t, 32, calculateNewPosition(14, "L", 82))
-// }
-// func TestRotationL181to32(t *testing.T) {
-// 	dial := NewSafeDial(50)
-// 	assert.Equal(t, 32, calculateNewPosition(14, "L", 181))
-// }
-
-// func TestLBelowZero(t *testing.T) {
-// 	dial := NewSafeDial(50)
-// 	assert.Equal(t, 32, calculateNewPosition(14, "L", 82))
-// }
-
-// func TestRAboveMaxMultiple(t *testing.T) {
-// 	dial := NewSafeDial(50)
-// 	assert.Equal(t, 2, calculateNewPosition(0, "R", 300))
-// }
-
-// func TestRAboveMax(t *testing.T) {
-// 	dial := NewSafeDial(50)
-// 	assert.Equal(t, 55, calculateNewPosition(95, "R", 60))
-// }
+func TestRotationR160To55(t *testing.T) {
+	dial := NewSafeDial(95)
+	dial.Rotate("R", 160)
+	assert.Equal(t, 55, dial.position)
+}
