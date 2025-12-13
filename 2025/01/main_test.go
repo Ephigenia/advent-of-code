@@ -55,14 +55,37 @@ func TestCalculateNewPosition(t *testing.T) {
 	assert.Equal(t, 32, dial.position)
 }
 
+func TestSimpleRotation(t *testing.T) {
+	dial := NewSafeDial(50)
+	dial.Rotate("R", 1)
+	assert.Equal(t, 51, dial.position)
+	assert.Equal(t, 0, dial.zeroCrossed)
+}
+
+func TestZeroPosition(t *testing.T) {
+	dial := NewSafeDial(50)
+	dial.Rotate("L", 50)
+	assert.Equal(t, 0, dial.position)
+	assert.True(t, dial.IsZeroPosition())
+}
+
+func TestMultipleRotations(t *testing.T) {
+	dial := NewSafeDial(50)
+	dial.Rotate("R", 200)
+	assert.Equal(t, 50, dial.position)
+	assert.Equal(t, 2, dial.zeroCrossed)
+}
+
 func TestRotationR60To55(t *testing.T) {
 	dial := NewSafeDial(95)
 	dial.Rotate("R", 60)
 	assert.Equal(t, 55, dial.position)
+	assert.Equal(t, 1, dial.zeroCrossed)
 }
 
 func TestRotationR160To55(t *testing.T) {
 	dial := NewSafeDial(95)
 	dial.Rotate("R", 160)
 	assert.Equal(t, 55, dial.position)
+	assert.Equal(t, 2, dial.zeroCrossed)
 }

@@ -28,6 +28,7 @@ func main() {
 	}
 
 	processInputPartOne(rawInput)
+	processInputPartTwo(rawInput)
 }
 
 func validateInputLine(line string) error {
@@ -72,7 +73,26 @@ func processInputPartOne(input string) {
 		}
 	}
 
-	fmt.Printf("hits: %d\n", hit)
+	fmt.Printf("part one: %d\n", hit)
+}
+
+func processInputPartTwo(input string) {
+	lines := strings.Split(input, "\n")
+
+	initialPosition := 50
+	dial := NewSafeDial(initialPosition)
+
+	for _, line := range lines {
+		instruction := convertInputLineToItem(line)
+		direction := instruction[0].direction
+		offset := instruction[0].offset
+
+		// new implementation
+		dial.Rotate(direction, offset)
+	}
+	// 5958 is wrong
+	// 5541 ??
+	fmt.Printf("part two: %d\n", dial.zeroCrossed)
 }
 
 type SafeDial struct {
@@ -81,6 +101,7 @@ type SafeDial struct {
 	initialPosition int // initial start position
 	position        int // current position
 	lastPosition    int // last position before last rotation
+	zeroCrossed     int // number of times zero position was crossed
 }
 
 func NewSafeDial(initialPosition int) *SafeDial {
@@ -90,6 +111,7 @@ func NewSafeDial(initialPosition int) *SafeDial {
 		initialPosition: initialPosition,
 		position:        initialPosition,
 		lastPosition:    initialPosition,
+		zeroCrossed:     0,
 	}
 }
 
@@ -111,8 +133,10 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 
 	fullRotations := s.calculateTotalRotations(s.position)
 	if s.position < s.min {
+		s.zeroCrossed += int(fullRotations)
 		s.position = int(fullRotations)*s.max + s.position
 	} else if s.position > s.max {
+		s.zeroCrossed += int(fullRotations)
 		s.position = s.position - int(fullRotations)*s.max
 	}
 
