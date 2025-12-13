@@ -97,17 +97,21 @@ func (s *SafeDial) IsZeroPosition() bool {
 	return s.position%(s.max-1) == 0
 }
 
-func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
-	s.lastPosition = s.position
-
+func NormalizeOffset(direction string, offset int) int {
 	switch direction {
 	case "L":
-		s.position = s.position - offset
+		return -offset
 	case "R":
-		s.position = s.position + offset
+		return +offset
 	default:
 		panic("invalid direction")
 	}
+}
+
+func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
+	s.lastPosition = s.position
+
+	s.position += NormalizeOffset(direction, offset)
 
 	fullRotations := s.calculateTotalRotations(s.position)
 	if s.position < s.min {
