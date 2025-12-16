@@ -89,3 +89,16 @@ func TestRotationR160To55(t *testing.T) {
 	assert.Equal(t, 55, dial.position)
 	assert.Equal(t, 2, dial.zeroCrossed)
 }
+
+func TestMe(t *testing.T) {
+	dial := NewSafeDial(33)
+	dial.Rotate("L", 684)
+	assert.Equal(t, 49, dial.position)
+}
+
+func TestSimpleFullRotations(t *testing.T) {
+	dial := NewSafeDial(0)
+	dial.Rotate("L", 200)
+	assert.Equal(t, 0, dial.position)
+	assert.Equal(t, 2, dial.zeroCrossed)
+}
