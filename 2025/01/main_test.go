@@ -96,14 +96,28 @@ func TestMe(t *testing.T) {
 	assert.Equal(t, 49, dial.position)
 }
 
-func TestSimpleFullRotations(t *testing.T) {
+func TestSimpleFullRightRotations(t *testing.T) {
+	dial := NewSafeDial(0)
+	dial.Rotate("R", 200)
+	assert.Equal(t, 0, dial.position)
+	assert.Equal(t, 2, dial.zeroCrossed)
+}
+
+func TestSimpleFullRightRotationsPlusONe(t *testing.T) {
+	dial := NewSafeDial(0)
+	dial.Rotate("R", 201)
+	assert.Equal(t, 1, dial.position)
+	assert.Equal(t, 2, dial.zeroCrossed)
+}
+
+func TestSimpleFullLeftRotations(t *testing.T) {
 	dial := NewSafeDial(0)
 	dial.Rotate("L", 200)
 	assert.Equal(t, 0, dial.position)
 	assert.Equal(t, 2, dial.zeroCrossed)
 }
 
-func TestSimpleFullRotationsPlusONe(t *testing.T) {
+func TestSimpleFullLeftRotationsPlusONe(t *testing.T) {
 	dial := NewSafeDial(0)
 	dial.Rotate("L", 201)
 	assert.Equal(t, 99, dial.position)
