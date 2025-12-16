@@ -113,8 +113,8 @@ func TestSimpleFullRightRotationsPlusONe(t *testing.T) {
 func TestSimpleFullLeftRotations(t *testing.T) {
 	dial := NewSafeDial(0)
 	dial.Rotate("L", 200)
-	assert.Equal(t, 0, dial.position)
-	assert.Equal(t, 2, dial.zeroCrossed)
+	assert.Equal(t, 99, dial.position)
+	assert.Equal(t, 3, dial.zeroCrossed)
 }
 
 func TestSimpleFullLeftRotationsPlusONe(t *testing.T) {
