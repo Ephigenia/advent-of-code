@@ -10,13 +10,13 @@ import (
 )
 
 func IsValidId(id int) bool {
-	re := regexp.MustCompile(`^(.+)(?:\1)+$`)
+	re := regexp.MustCompile(`^(.+)(?:\\1)+$`)
 
 	idStr := strconv.Itoa(id)
 	r := re.Match([]byte(idStr))
 
 	spew.Dump(r)
-	return true
+	return r
 }
 
 // 1012
