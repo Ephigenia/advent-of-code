@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
 	"github.com/davecgh/go-spew/spew"
@@ -27,5 +28,6 @@ func main() {
 }
 
 func processInputPartOne(input string) {
-	spew.Dump(input)
+	parts := strings.Split(input, ",")
+	spew.Dump(parts)
 }
