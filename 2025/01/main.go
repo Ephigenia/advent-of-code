@@ -145,7 +145,7 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 	fmt.Printf("Rotated %s%d: from %d to %d (full rotations: %.0f, zero crossed: %d)\n", direction, offset, s.lastPosition, s.position, fullRotations, s.zeroCrossed)
 
 	if s.position == s.max {
-		s.zeroCrossed++
+		// s.zeroCrossed++
 		s.position = 0
 	}
 	return s
