@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"path"
+	"regexp"
 	"strings"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
@@ -28,6 +29,11 @@ func main() {
 }
 
 func processInputPartOne(input string) {
-	parts := strings.Split(input, ",")
-	spew.Dump(parts)
+	re := regexp.MustCompile("\r?\n")
+	normalizedInput := re.ReplaceAllString(input, "")
+	parts := strings.Split(normalizedInput, ",")
+	for _, part := range parts {
+		splitted := strings.Split(part, "-")
+		spew.Dump(splitted)
+	}
 }
