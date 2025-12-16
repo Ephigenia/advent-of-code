@@ -93,7 +93,7 @@ func processInputPartTwo(input string) {
 	// 5958 is wrong
 	// 5541 is wrong
 	// 4136 wrong
-	// 2426
+	// 2426 wrong
 	fmt.Printf("part two: %d\n", dial.zeroCrossed)
 }
 
