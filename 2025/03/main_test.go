@@ -13,6 +13,23 @@ func TestProcessSet(t *testing.T) {
 	assert.Equal(t, 45, ref)
 }
 
+func TestProcessSetEdge(t *testing.T) {
+	vals := []int{0, 0, 0, 0, 5}
+	ref := ProcessSet(vals)
+	assert.Equal(t, 5, ref)
+}
+func TestProcessSetEdge2(t *testing.T) {
+	vals := []int{5, 0, 0, 0, 0}
+	ref := ProcessSet(vals)
+	assert.Equal(t, 50, ref)
+}
+
+func TestProcessSetEdge3(t *testing.T) {
+	vals := []int{9, 9, 9, 0, 9}
+	ref := ProcessSet(vals)
+	assert.Equal(t, 99, ref)
+}
+
 func TestProcessSet2(t *testing.T) {
 	vals := []int{2, 1, 3, 1, 1}
 	ref := ProcessSet(vals)
