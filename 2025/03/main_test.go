@@ -9,5 +9,5 @@ import (
 func TestProcessSet(t *testing.T) {
 	vals := []int{1, 2, 3, 4, 5}
 	ref := ProcessSet(vals)
-	assert.Equal(t, "45", ref)
+	assert.Equal(t, 45, ref)
 }
