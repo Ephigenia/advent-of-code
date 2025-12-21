@@ -30,12 +30,15 @@ func main() {
 
 func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
+	total := 0
 	for _, line := range lines {
-		fmt.Printf("Processing line: %s\n", line)
 		vals := lib2024.ArrStrToInt(strings.Split(line, ""))
 		// numbers can not be sorted as this would change their order
-		ProcessSet(vals)
+		processingResult := ProcessSet(vals)
+		total += processingResult
+		fmt.Printf("Processing line: %s, result: %d, total %d\n", line, processingResult, total)
 	}
+	fmt.Printf("Total result: %d\n", total)
 }
 
 func ProcessSet(vals []int) int {
