@@ -28,6 +28,7 @@ func main() {
 	processInputPartOne(rawInput)
 }
 
+// correct answer is 17179
 func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
 	total := 0
