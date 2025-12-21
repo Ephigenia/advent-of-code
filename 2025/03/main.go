@@ -9,7 +9,6 @@ import (
 
 	lib2024 "github.com/Ephigenia/advent-of-code/2024/lib"
 	lib "github.com/Ephigenia/advent-of-code/2025/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -43,6 +42,5 @@ func ProcessSet(vals []int) int {
 	// find the max in the vals and then the
 	firstMax, firstMaxIndex := lib.ArrMaxAndIndex(vals[0 : len(vals)-1])
 	secondMax, _ := lib.ArrMaxAndIndex(vals[firstMaxIndex+1:])
-	spew.Dump(firstMax, secondMax)
 	return firstMax*10 + secondMax
 }
