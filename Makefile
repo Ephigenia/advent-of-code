@@ -2,12 +2,14 @@ YEAR ?= 2025
 DAY ?= 01
 ARGS ?=
 
+init:
+	$(MAKE) -C $(YEAR) init
+
 run:
-	cd $(YEAR)/$(DAY) && go run main.go $(ARGS)
+	$(MAKE) -C $(YEAR) run
 
 test:
-	cd $(YEAR)/lib && go test -v ./... $(ARGS)
-	cd $(YEAR)/$(DAY) && go test -v ./... $(ARGS)
+	$(MAKE) -C $(YEAR) test
 
 test/watch:
-	watch -n 2 $(MAKE) test
+	$(MAKE) -C $(YEAR) test/watch
