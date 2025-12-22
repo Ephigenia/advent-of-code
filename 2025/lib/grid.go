@@ -92,3 +92,13 @@ func (g *Grid) GetAround(x, y int) []rune {
 	}
 	return g.GetOffsets(x, y, offsets)
 }
+
+func ArrCountOccurences[T comparable](arr []T, val T) int {
+	count := 0
+	for _, v := range arr {
+		if v == val {
+			count++
+		}
+	}
+	return count
+}

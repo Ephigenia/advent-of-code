@@ -38,12 +38,7 @@ func processInputPartOne(input string) {
 			return
 		}
 		vals := grid.GetAround(x, y)
-		count := 0
-		for _, v := range vals {
-			if v == '@' {
-				count++
-			}
-		}
+		count := lib2025.ArrCountOccurences(vals, '#')
 		if count < 4 {
 			found++
 		}
