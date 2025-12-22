@@ -50,8 +50,5 @@ func processInputPartOne(input string) {
 	}
 	grid.Iterate(gridIterator)
 
-	fmt.Println()
-	grid.Print()
-
 	fmt.Println("Part One:", found)
 }
