@@ -39,6 +39,10 @@ func (g *Grid) Get(x, y int) rune {
 	return g.Cells[y][x]
 }
 
+func (g *Grid) Exists(x, y int) bool {
+	return x >= 0 && x < g.Width && y >= 0 && y < g.Height
+}
+
 func (g *Grid) Set(x, y int, value rune) {
 	g.Cells[y][x] = value
 }
@@ -50,4 +54,30 @@ func (g *Grid) Print() {
 		}
 		fmt.Println()
 	}
+}
+
+type Offset struct {
+	DX, DY int
+}
+
+func (g *Grid) GetOffsets(x, y int, offsets []Offset) []rune {
+	ret := make([]rune, len(offsets))
+	for i, offset := range offsets {
+		nx, ny := x+offset.DX, y+offset.DY
+		ret[i] = -1
+		if g.Exists(nx, ny) {
+			ret[i] = g.Get(nx, ny)
+		}
+	}
+	return ret
+}
+
+// returns the runes around the given coordinates
+func (g *Grid) GetS(x, y int) []rune {
+	offsets := []Offset{
+		{-1, -1}, {0, -1}, {1, -1},
+		{-1, 0}, {1, 0},
+		{-1, 1}, {0, 1}, {1, 1},
+	}
+	return g.GetOffsets(x, y, offsets)
 }

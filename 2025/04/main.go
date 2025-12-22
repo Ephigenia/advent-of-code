@@ -8,6 +8,7 @@ import (
 
 	lib2024 "github.com/Ephigenia/advent-of-code/2024/lib"
 	lib2025 "github.com/Ephigenia/advent-of-code/2025/lib"
+	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -31,5 +32,8 @@ func main() {
 func processInputPartOne(input string) {
 	grid := lib2025.NewGridFromString(input)
 	grid.Print()
+
+	s := grid.GetS(0, 0)
+	spew.Dump(s)
 	fmt.Println("Part One:", 0)
 }
