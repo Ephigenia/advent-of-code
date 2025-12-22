@@ -60,6 +60,16 @@ type Offset struct {
 	DX, DY int
 }
 
+func (g *Grid) Iterate(f func(x, y int, value rune)) {
+	for y := 0; y < g.Height; y++ {
+		for x := 0; x < g.Width; x++ {
+			f(x, y, g.Get(x, y))
+		}
+	}
+}
+
+// return the grid values at the given offsets from (x, y)
+// if a value is not set 0 is returned
 func (g *Grid) GetOffsets(x, y int, offsets []Offset) []rune {
 	ret := make([]rune, len(offsets))
 	for i, offset := range offsets {
@@ -72,8 +82,9 @@ func (g *Grid) GetOffsets(x, y int, offsets []Offset) []rune {
 	return ret
 }
 
-// returns the runes around the given coordinates
-func (g *Grid) GetS(x, y int) []rune {
+// returns the runes around (cardinal and diagonal)
+// the given coordinates
+func (g *Grid) GetAround(x, y int) []rune {
 	offsets := []Offset{
 		{-1, -1}, {0, -1}, {1, -1},
 		{-1, 0}, {1, 0},
