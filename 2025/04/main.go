@@ -34,6 +34,9 @@ func processInputPartOne(input string) {
 
 	found := 0
 	gridIterator := func(x, y int, value rune) {
+		if grid.Get(x, y) != '@' {
+			return
+		}
 		vals := grid.GetAround(x, y)
 		count := 0
 		for _, v := range vals {
@@ -46,6 +49,9 @@ func processInputPartOne(input string) {
 		}
 	}
 	grid.Iterate(gridIterator)
+
+	fmt.Println()
+	grid.Print()
 
 	fmt.Println("Part One:", found)
 }
