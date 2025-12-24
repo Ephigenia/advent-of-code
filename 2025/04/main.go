@@ -8,6 +8,7 @@ import (
 
 	lib2024 "github.com/Ephigenia/advent-of-code/2024/lib"
 	lib2025 "github.com/Ephigenia/advent-of-code/2025/lib"
+	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -38,10 +39,17 @@ func processInputPartOne(input string) {
 			return
 		}
 		vals := grid.GetAround(x, y)
-		count := lib2025.ArrCountOccurences(vals, '#')
+		count := 0
+		for _, v := range vals {
+			if v == '@' {
+				count++
+			}
+		}
+		count2 := lib2025.ArrCountOccurences(vals, '@')
 		if count < 4 {
 			found++
 		}
+		spew.Dump(count, count2)
 	}
 	grid.Iterate(gridIterator)
 
