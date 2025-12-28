@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	lib2024 "github.com/Ephigenia/advent-of-code/2024/lib"
+	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -26,6 +27,27 @@ func main() {
 	}
 
 	processInputPartOne(rawInput)
+	processInputPartTwo(rawInput)
+}
+
+func parseInputPartTwo(input string) ([][]int, operators []string) {
+  re := regexp.MustCompile(`\s+`)
+	lines := strings.Split(input, "\n")
+
+	operators := make([]string, 0)
+	data := make([][]int, len(lines)-1)
+
+  for y, line := range lines {
+    columns := re.Split(line, -1)
+    // from right to left
+  }
+
+  return data, operators
+}
+
+func processInputPartTwo(input string) {
+	i := parseInputPartTwo(input)
+	spew.Dump(i)
 }
 
 func parseInput(input string) ([][]int, []string) {
