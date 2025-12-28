@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	lib2024 "github.com/Ephigenia/advent-of-code/2024/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -48,6 +47,20 @@ func parseInput(input string) ([][]int, []string) {
 	return data, operators
 }
 
+func evaluateOperationPartOne(input int, operator string, value int) int {
+	switch operator {
+	case "+":
+		return input + value
+	case "*":
+		if input == 0 {
+			return value
+		}
+		return input * value
+	default:
+		panic("unknown operator " + operator)
+	}
+}
+
 // correct answer is 7229350537438%
 func processInputPartOne(input string) {
 	data, operators := parseInput(input)
@@ -56,19 +69,9 @@ func processInputPartOne(input string) {
 	for x := 0; x < len(data[0]); x++ {
 		operator := operators[x]
 		for y := 0; y < len(data); y++ {
-			// fmt.Printf("data[%d][%d]=%d operator=%s\n", y, x, data[y][x], operator, problems[x])
-			switch operator {
-			case "+":
-				problems[x] += data[y][x]
-			case "*":
-				if problems[x] == 0 {
-					problems[x] = 1
-				}
-				problems[x] *= data[y][x]
-			}
+			problems[x] = evaluateOperationPartOne(problems[x], operator, data[y][x])
 		}
 	}
 
-	spew.Dump(problems)
 	fmt.Printf("part one %d", lib2024.ArrIntSum(problems))
 }
