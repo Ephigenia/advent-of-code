@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path"
 	"regexp"
@@ -10,7 +11,6 @@ import (
 
 	lib2024 "github.com/Ephigenia/advent-of-code/2024/lib"
 	"github.com/Ephigenia/advent-of-code/2025/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -40,9 +40,8 @@ func processInputPartOne(input string) {
 		splitted := lib2024.ArrStrToInt(strings.Split(part, "-"))
 		invalidIds = append(invalidIds, InvalidIdsFromRange(splitted[0], splitted[1])...)
 	}
-	spew.Dump(invalidIds)
 	sum := lib2024.ArrIntSum(invalidIds)
-	spew.Dump("sum", sum)
+	fmt.Printf("Part one: %d\n", sum)
 }
 
 func IsValidId(str string) bool {
