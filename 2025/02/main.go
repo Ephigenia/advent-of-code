@@ -53,11 +53,12 @@ func StrContainsRepeatedPattern(str string) (pattern string, count int) {
 	// Check for repeated patterns (11, 1010, 446446, etc.)
 	for patternLen := 1; patternLen <= len(str)/2; patternLen++ {
 		pattern := str[:patternLen]
-		if (len(str) / patternLen) > 2 {
+		occurrences := len(str) / patternLen
+		if (occurrences) > 2 {
 			continue
 		}
-		if strings.Repeat(pattern, len(str)/patternLen) == str[:len(pattern)*(len(str)/patternLen)] {
-			ptr := str[:len(pattern)*(len(str)/patternLen)]
+		if strings.Repeat(pattern, occurrences) == str[:len(pattern)*(occurrences)] {
+			ptr := str[:len(pattern)*(occurrences)]
 			return ptr, strings.Count(str, ptr)
 		}
 	}
