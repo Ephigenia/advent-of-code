@@ -44,34 +44,23 @@ func processInputPartOne(input string) {
 	spew.Dump("sum", sum)
 }
 
+func StrSplitChunk(str string, size int) []string {
+	return []string{
+		str[0:size],
+		str[size:],
+	}
+}
+
 func IsValidId(str string) bool {
 	// ids starting with zero are invalid
 	if str[0:1] == "0" {
 		return true
 	}
-	// ids containing repeated patterns are invalid
-	pattern, count := StrContainsRepeatedPattern(str)
-	if pattern == "" {
-		return true
-	}
-	if count == 2 && pattern+pattern == str {
+	chunks := StrSplitChunk(str, len(str)/2)
+	if chunks[0] == chunks[1] {
 		return false
 	}
-
 	return true
-}
-
-func StrContainsRepeatedPattern(str string) (pattern string, count int) {
-	// Check for repeated patterns (11, 1010, 446446, etc.)
-	for patternLen := 1; patternLen <= len(str)/2; patternLen++ {
-		pattern := str[:patternLen]
-		occurrences := len(str) / patternLen
-		// fmt.Printf("str %s %d %s\n", str, patternLen, pattern)
-		if strings.Repeat(pattern, occurrences) == str[:len(pattern)*(occurrences)] {
-			return pattern, strings.Count(str, pattern)
-		}
-	}
-	return "", 0
 }
 
 func InvalidIdsFromRange(start, end int) []int {

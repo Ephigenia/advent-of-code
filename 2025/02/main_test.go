@@ -36,6 +36,10 @@ func TestIsValidId(t *testing.T) {
 		input    string
 		expected bool
 	}{
+		{"123123", false},
+		{"222222", false},
+		{"222223", true},
+
 		{"10", true},
 		{"11", false},
 		{"12", true},
@@ -57,32 +61,6 @@ func TestIsValidId(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			result := IsValidId(tc.input)
 			assert.Equal(t, tc.expected, result)
-		})
-	}
-}
-
-func TestStrContainsRepeatedPattern(t *testing.T) {
-	testCases := []struct {
-		input           string
-		expectedPattern string
-		expectedCount   int
-	}{
-		{"11", "1", 2},
-		{"111", "1", 3},
-		{"101", "", 0},
-		{"22", "2", 2},
-		{"1010", "10", 2},
-		{"222222", "2", 6},
-		{"446446", "446", 2},
-		{"38593859", "3859", 2},
-		{"2121212119", "2121", 2},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.input, func(t *testing.T) {
-			pattern, count := StrContainsRepeatedPattern(tc.input)
-			assert.Equal(t, tc.expectedPattern, pattern)
-			assert.Equal(t, tc.expectedCount, count)
 		})
 	}
 }
