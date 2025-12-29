@@ -12,7 +12,6 @@ func TestInvalidIdsFromRange(t *testing.T) {
 		input    [2]int
 		expected []int
 	}{
-		// test cases from the exampel
 		{[2]int{10, 22}, []int{11, 22}},
 		{[2]int{95, 115}, []int{99}},
 		// {[2]int{998, 1012}, []int{1010}},
@@ -30,12 +29,27 @@ func TestInvalidIdsFromRange(t *testing.T) {
 	}
 }
 
+func TestIsValidId(t *testing.T) {
+	testCases := []struct {
+		input    string
+		expected bool
+	}{
+		{"0101", false},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.input, func(t *testing.T) {
+			result := StrContainsRepeatedPattern(tc.input)
+			assert.Equal(t, tc.expected, result)
+		})
+	}
+}
+
 func TestStrContainsRepeatedPattern(t *testing.T) {
 	testCases := []struct {
 		input    string
 		expected bool
 	}{
-		// test cases from the exampel
 		{"11", true},
 		{"22", true},
 		{"1010", true},
