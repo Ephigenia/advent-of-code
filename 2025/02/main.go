@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path"
 	"regexp"
@@ -50,12 +51,13 @@ func IsValidId(str string) bool {
 		return true
 	}
 	// ids containing repeated patterns are invalid
-	pattern, _ := StrContainsRepeatedPattern(str)
-	if pattern == "" {
+	pattern, count := StrContainsRepeatedPattern(str)
+	fmt.Printf("str: %s, pattern: %s, count: %d\n", str, pattern, count)
+	if pattern == "" || count <= 1 {
 		return true
 	}
-	return pattern+pattern == str
-	// return pattern == "" || (pattern != "" && count == 2)
+
+	return count == 2 && pattern+pattern == str
 }
 
 func StrContainsRepeatedPattern(str string) (pattern string, count int) {
@@ -75,7 +77,7 @@ func StrContainsRepeatedPattern(str string) (pattern string, count int) {
 }
 
 func InvalidIdsFromRange(start, end int) []int {
-	var invalidIds []int
+	invalidIds := make([]int, 0)
 	for i := start; i <= end; i++ {
 		if !IsValidId(strconv.Itoa(i)) {
 			invalidIds = append(invalidIds, i)

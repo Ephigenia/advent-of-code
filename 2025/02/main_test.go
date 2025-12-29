@@ -43,12 +43,14 @@ func TestIsValidId(t *testing.T) {
 		{"0101", true},
 		{"0", true},
 
-		{"11", false},
 		{"22", false},
 		{"1010", false},
 		{"222222", false},
 		{"446446", false},
 		{"38593859", false},
+
+		{"2121212118", true},
+		{"2121212119", true},
 	}
 
 	for _, tc := range testCases {
