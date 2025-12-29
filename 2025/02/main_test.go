@@ -64,3 +64,47 @@ func TestIsValidId(t *testing.T) {
 		})
 	}
 }
+
+func TestStrRepeatedPattern(t *testing.T) {
+	testCases := []struct {
+		input   string
+		pattern string
+		count   int
+	}{
+		{"11", "1", 2},
+		{"22", "2", 2},
+		{"123123123", "123", 3},
+		{"1212121212", "12", 5},
+		{"1111111", "1", 7},
+		{"2121212122", "2121", 2},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.input, func(t *testing.T) {
+			pattern, count := StrRepeatedPattern(tc.input)
+			assert.Equal(t, tc.pattern, pattern)
+			assert.Equal(t, tc.count, count)
+		})
+	}
+}
+
+func TestIsValidId2(t *testing.T) {
+	testCases := []struct {
+		input    string
+		expected bool
+	}{
+		{"11", false},
+		{"22", false},
+		{"123123123", false},
+		{"1212121212", false},
+		{"1111111", false},
+
+		{"2121212122", true},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.input, func(t *testing.T) {
+			assert.Equal(t, tc.expected, IsValidId2(tc.input))
+		})
+	}
+}
