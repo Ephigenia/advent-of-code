@@ -52,8 +52,7 @@ func IsValidId(str string) bool {
 	}
 	// ids containing repeated patterns are invalid
 	pattern, count := StrContainsRepeatedPattern(str)
-	fmt.Printf("str: %s, pattern: %s, count: %d\n", str, pattern, count)
-	if pattern == "" || count <= 1 {
+	if pattern == "" {
 		return true
 	}
 
@@ -63,6 +62,7 @@ func IsValidId(str string) bool {
 func StrContainsRepeatedPattern(str string) (pattern string, count int) {
 	// Check for repeated patterns (11, 1010, 446446, etc.)
 	for patternLen := 1; patternLen <= len(str)/2; patternLen++ {
+		fmt.Printf("str %s\n", str)
 		pattern := str[:patternLen]
 		occurrences := len(str) / patternLen
 		if (occurrences) > 2 {
