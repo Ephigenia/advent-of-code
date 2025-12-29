@@ -35,11 +35,19 @@ func TestIsValidId(t *testing.T) {
 		expected bool
 	}{
 		{"0101", false},
+		{"0", false},
+
+		{"11", true},
+		{"22", true},
+		{"1010", true},
+		{"222222", true},
+		{"446446", true},
+		{"38593859", true},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.input, func(t *testing.T) {
-			result := StrContainsRepeatedPattern(tc.input)
+			result := IsValidId(tc.input)
 			assert.Equal(t, tc.expected, result)
 		})
 	}

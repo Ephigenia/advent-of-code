@@ -39,12 +39,11 @@ func processInputPartOne(input string) {
 	}
 }
 
-func IsValidId(id int) bool {
-	strId := strconv.Itoa(id)
-	if strId[0:1] == "0" {
+func IsValidId(str string) bool {
+	if str[0:1] == "0" {
 		return false
 	}
-	return !StrContainsRepeatedPattern(strId)
+	return StrContainsRepeatedPattern(str)
 }
 
 func StrContainsRepeatedPattern(str string) bool {
