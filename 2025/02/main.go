@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"path"
 	"regexp"
@@ -55,22 +54,21 @@ func IsValidId(str string) bool {
 	if pattern == "" {
 		return true
 	}
+	if count == 2 && pattern+pattern == str {
+		return false
+	}
 
-	return count == 2 && pattern+pattern == str
+	return true
 }
 
 func StrContainsRepeatedPattern(str string) (pattern string, count int) {
 	// Check for repeated patterns (11, 1010, 446446, etc.)
 	for patternLen := 1; patternLen <= len(str)/2; patternLen++ {
-		fmt.Printf("str %s\n", str)
 		pattern := str[:patternLen]
 		occurrences := len(str) / patternLen
-		if (occurrences) > 2 {
-			continue
-		}
+		// fmt.Printf("str %s %d %s\n", str, patternLen, pattern)
 		if strings.Repeat(pattern, occurrences) == str[:len(pattern)*(occurrences)] {
-			ptr := str[:len(pattern)*(occurrences)]
-			return ptr, strings.Count(str, ptr)
+			return pattern, strings.Count(str, pattern)
 		}
 	}
 	return "", 0
