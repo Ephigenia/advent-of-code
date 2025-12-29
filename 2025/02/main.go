@@ -30,6 +30,7 @@ func main() {
 	processInputPartOne(rawInput)
 }
 
+// right answer is 13919717792
 func processInputPartOne(input string) {
 	re := regexp.MustCompile("\r?\n")
 	normalizedInput := re.ReplaceAllString(input, "")
@@ -44,19 +45,16 @@ func processInputPartOne(input string) {
 	spew.Dump("sum", sum)
 }
 
-func StrSplitChunk(str string, size int) []string {
-	return []string{
-		str[0:size],
-		str[size:],
-	}
-}
-
 func IsValidId(str string) bool {
 	// ids starting with zero are invalid
 	if str[0:1] == "0" {
 		return true
 	}
-	chunks := StrSplitChunk(str, len(str)/2)
+	size := len(str) / 2
+	chunks := []string{
+		str[0:size],
+		str[size:],
+	}
 	if chunks[0] == chunks[1] {
 		return false
 	}
