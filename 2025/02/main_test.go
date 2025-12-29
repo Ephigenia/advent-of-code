@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -54,6 +55,7 @@ func TestIsValidId(t *testing.T) {
 }
 
 func TestIsValidId2(t *testing.T) {
+	spew.Dump(StrContainsRepeatedPattern("111"))
 	assert.True(t, IsValidId("111"))
 }
 
