@@ -42,11 +42,11 @@ func processInputPartOne(input string) {
 func IsValidId(str string) bool {
 	// ids starting with zero are invalid
 	if str[0:1] == "0" {
-		return false
+		return true
 	}
 	// ids containing repeated patterns are invalid
 	pattern, count := StrContainsRepeatedPattern(str)
-	return pattern != "" && count >= 1 && count <= 2
+	return pattern == "" || count == 0 || count > 2
 }
 
 func StrContainsRepeatedPattern(str string) (pattern string, count int) {
@@ -54,7 +54,8 @@ func StrContainsRepeatedPattern(str string) (pattern string, count int) {
 	for patternLen := 1; patternLen <= len(str)/2; patternLen++ {
 		pattern := str[:patternLen]
 		if strings.Repeat(pattern, len(str)/patternLen) == str[:len(pattern)*(len(str)/patternLen)] {
-			return pattern, strings.Count(str, pattern)
+			ptr := str[:len(pattern)*(len(str)/patternLen)]
+			return ptr, strings.Count(str, ptr)
 		}
 	}
 	return "", 0
@@ -63,7 +64,7 @@ func StrContainsRepeatedPattern(str string) (pattern string, count int) {
 func InvalidIdsFromRange(start, end int) []int {
 	var invalidIds []int
 	for i := start; i <= end; i++ {
-		if IsValidId(strconv.Itoa(i)) {
+		if !IsValidId(strconv.Itoa(i)) {
 			invalidIds = append(invalidIds, i)
 		}
 	}
