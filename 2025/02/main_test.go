@@ -53,6 +53,10 @@ func TestIsValidId(t *testing.T) {
 	}
 }
 
+func TestIsValidId2(t *testing.T) {
+	assert.True(t, IsValidId("111"))
+}
+
 func TestStrContainsRepeatedPattern(t *testing.T) {
 	testCases := []struct {
 		input           string
