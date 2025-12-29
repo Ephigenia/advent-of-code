@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,6 +17,8 @@ func TestInvalidIdsFromRange(t *testing.T) {
 		{[2]int{998, 1012}, []int{1010}},
 		{[2]int{1188511880, 1188511890}, []int{1188511885}},
 		{[2]int{222220, 222224}, []int{222222}},
+		{[2]int{824824821, 824824827}, []int{}},
+		{[2]int{2121212118, 2121212124}, []int{}},
 		// manual cases
 	}
 
@@ -56,11 +57,6 @@ func TestIsValidId(t *testing.T) {
 			assert.Equal(t, tc.expected, result)
 		})
 	}
-}
-
-func TestIsValidId2(t *testing.T) {
-	spew.Dump(StrContainsRepeatedPattern("2"))
-	assert.True(t, IsValidId("111"))
 }
 
 func TestStrContainsRepeatedPattern(t *testing.T) {

@@ -8,7 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Ephigenia/advent-of-code/2024/lib"
+	lib2024 "github.com/Ephigenia/advent-of-code/2024/lib"
+	"github.com/Ephigenia/advent-of-code/2025/lib"
 	"github.com/davecgh/go-spew/spew"
 )
 
@@ -33,10 +34,14 @@ func processInputPartOne(input string) {
 	re := regexp.MustCompile("\r?\n")
 	normalizedInput := re.ReplaceAllString(input, "")
 	parts := strings.Split(normalizedInput, ",")
+	invalidIds := []int{}
 	for _, part := range parts {
-		splitted := strings.Split(part, "-")
-		spew.Dump(splitted)
+		splitted := lib2024.ArrStrToInt(strings.Split(part, "-"))
+		invalidIds = append(invalidIds, InvalidIdsFromRange(splitted[0], splitted[1])...)
 	}
+	spew.Dump(invalidIds)
+	sum := lib2024.ArrIntSum(invalidIds)
+	spew.Dump("sum", sum)
 }
 
 func IsValidId(str string) bool {
@@ -45,8 +50,12 @@ func IsValidId(str string) bool {
 		return true
 	}
 	// ids containing repeated patterns are invalid
-	pattern, count := StrContainsRepeatedPattern(str)
-	return pattern == "" || (pattern != "" && count == 2)
+	pattern, _ := StrContainsRepeatedPattern(str)
+	if pattern == "" {
+		return true
+	}
+	return pattern+pattern == str
+	// return pattern == "" || (pattern != "" && count == 2)
 }
 
 func StrContainsRepeatedPattern(str string) (pattern string, count int) {
