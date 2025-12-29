@@ -14,7 +14,7 @@ func TestInvalidIdsFromRange(t *testing.T) {
 		expected []int
 	}{
 		{[2]int{10, 22}, []int{11, 22}},
-		// {[2]int{95, 115}, []int{99}},
+		{[2]int{95, 115}, []int{99}},
 		// {[2]int{998, 1012}, []int{1010}},
 		// {[2]int{1188511880, 1188511890}, []int{1188511885}},
 		// {[2]int{222220, 222224}, []int{222220}},
@@ -35,6 +35,10 @@ func TestIsValidId(t *testing.T) {
 		input    string
 		expected bool
 	}{
+		{"10", true},
+		{"11", false},
+		{"12", true},
+
 		{"0101", true},
 		{"0", true},
 
@@ -66,6 +70,8 @@ func TestStrContainsRepeatedPattern(t *testing.T) {
 		expectedCount   int
 	}{
 		{"11", "11", 1},
+		{"111", "111", 1},
+		{"101", "", 0},
 		{"22", "22", 1},
 		{"1010", "1010", 1},
 		{"222222", "222222", 1},

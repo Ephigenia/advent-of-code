@@ -46,7 +46,7 @@ func IsValidId(str string) bool {
 	}
 	// ids containing repeated patterns are invalid
 	pattern, count := StrContainsRepeatedPattern(str)
-	return pattern != "" && count == 2
+	return pattern == "" || (pattern != "" && count == 2)
 }
 
 func StrContainsRepeatedPattern(str string) (pattern string, count int) {
