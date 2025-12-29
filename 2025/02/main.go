@@ -5,6 +5,7 @@ import (
 	"os"
 	"path"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/Ephigenia/advent-of-code/2024/lib"
@@ -36,4 +37,25 @@ func processInputPartOne(input string) {
 		splitted := strings.Split(part, "-")
 		spew.Dump(splitted)
 	}
+}
+
+func StrContainsRepeatedPattern(str string) bool {
+	// Check for repeated patterns (11, 1010, 446446, etc.)
+	for patternLen := 1; patternLen <= len(str)/2; patternLen++ {
+		pattern := str[:patternLen]
+		if strings.Repeat(pattern, len(str)/patternLen) == str[:len(pattern)*(len(str)/patternLen)] {
+			return true
+		}
+	}
+	return false
+}
+
+func InvalidIdsFromRange(start, end int) []int {
+	var invalidIds []int
+	for i := start; i <= end; i++ {
+		if StrContainsRepeatedPattern(strconv.Itoa(i)) {
+			invalidIds = append(invalidIds, i)
+		}
+	}
+	return invalidIds
 }

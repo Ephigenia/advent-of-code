@@ -1,36 +1,54 @@
 package main
 
 import (
-	"regexp"
-	"strconv"
+	"fmt"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
-func IsValidId(id int) bool {
-	re := regexp.MustCompile(`^(.+)(?:\\1)+$`)
+func TestInvalidIdsFromRange(t *testing.T) {
+	testCases := []struct {
+		input    [2]int
+		expected []int
+	}{
+		// test cases from the exampel
+		{[2]int{10, 22}, []int{11, 22}},
+		{[2]int{95, 115}, []int{99}},
+		// {[2]int{998, 1012}, []int{1010}},
+		// {[2]int{1188511880, 1188511890}, []int{1188511885}},
+		// {[2]int{222220, 222224}, []int{222220}},
+		// manual cases
+	}
 
-	idStr := strconv.Itoa(id)
-	r := re.Match([]byte(idStr))
-
-	spew.Dump(idStr, r)
-	return r
+	for _, tc := range testCases {
+		name := fmt.Sprintf("%v-%v", tc.input[0], tc.input[1])
+		t.Run(name, func(t *testing.T) {
+			result := InvalidIdsFromRange(tc.input[0], tc.input[1])
+			assert.Equal(t, tc.expected, result)
+		})
+	}
 }
 
-// 1012
+func TestStrContainsRepeatedPattern(t *testing.T) {
+	testCases := []struct {
+		input    string
+		expected bool
+	}{
+		// test cases from the exampel
+		{"11", true},
+		{"22", true},
+		{"1010", true},
+		{"222222", true},
+		{"446446", true},
+		{"38593859", true},
+		// manual cases
+	}
 
-func TestValidId(t *testing.T) {
-	assert.True(t, IsValidId(12))
-	assert.True(t, IsValidId(13))
-}
-
-func TestInvalId(t *testing.T) {
-	assert.False(t, IsValidId(11))
-	assert.False(t, IsValidId(22))
-	assert.False(t, IsValidId(1010))
-	assert.False(t, IsValidId(222222))
-	assert.False(t, IsValidId(446446))
-	assert.False(t, IsValidId(38593859))
+	for _, tc := range testCases {
+		t.Run(tc.input, func(t *testing.T) {
+			result := StrContainsRepeatedPattern(tc.input)
+			assert.Equal(t, tc.expected, result)
+		})
+	}
 }
