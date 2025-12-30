@@ -57,7 +57,7 @@ func processInputPartTwo(input string) {
 	}
 	spew.Dump(invalidIds)
 	sum := lib2024.ArrIntSum(invalidIds)
-	fmt.Printf("Part one: %d\n", sum)
+	fmt.Printf("Part Two: %d\n", sum)
 }
 
 func IsValidId(str string) bool {
@@ -92,8 +92,7 @@ func IsValidId2(str string) bool {
 		return true
 	}
 	pattern, count := StrRepeatedPattern(str)
-	// fmt.Printf("str %s %s %s\n", str, strings.Repeat(pattern, count), str)
-	return !(count >= 2 || strings.Repeat(pattern, count) == str)
+	return !(count >= 2 && strings.Repeat(pattern, count) == str)
 }
 
 func StrRepeatedPattern(str string) (pattern string, count int) {

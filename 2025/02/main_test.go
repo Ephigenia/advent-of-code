@@ -76,9 +76,10 @@ func TestStrRepeatedPattern(t *testing.T) {
 		{"123123123", "123", 3},
 		{"1212121212", "12", 5},
 		{"1111111", "1", 7},
-		{"2121212122", "2121", 2},
+		{"2121212122", "21", 4},
+		{"2121212121", "21", 5},
+		{"2121212120", "21", 4},
 	}
-
 	for _, tc := range testCases {
 		t.Run(tc.input, func(t *testing.T) {
 			pattern, count := StrRepeatedPattern(tc.input)
@@ -99,6 +100,8 @@ func TestIsValidId2(t *testing.T) {
 		{"1212121212", false},
 		{"1111111", false},
 
+		{"2121212120", true},
+		{"2121212121", false},
 		{"2121212122", true},
 	}
 
