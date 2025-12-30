@@ -11,7 +11,6 @@ import (
 
 	lib2024 "github.com/Ephigenia/advent-of-code/2024/lib"
 	"github.com/Ephigenia/advent-of-code/2025/lib"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
@@ -55,7 +54,6 @@ func processInputPartTwo(input string) {
 		splitted := lib2024.ArrStrToInt(strings.Split(part, "-"))
 		invalidIds = append(invalidIds, InvalidIdsFromRange2(splitted[0], splitted[1])...)
 	}
-	spew.Dump(invalidIds)
 	sum := lib2024.ArrIntSum(invalidIds)
 	fmt.Printf("Part Two: %d\n", sum)
 }
