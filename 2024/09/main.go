@@ -24,45 +24,57 @@ func main() {
 	if err != nil {
 		lib.ExitWithError(err)
 	}
-	input := parseInput(rawInput)
-	fmt.Printf("Input: %v\n", input)
-	printMap(input)
-	processInputPartOne(rawInput)
+	fmt.Printf("Raw input %s\n", rawInput)
+
+	disk := parseInput(rawInput)
+	fmt.Printf("%s\n", disk.String())
 }
 
-func printMap(m []int) {
-	mode := 1
-	parts := []string{}
-	id := 0
-	for i := 0; i < len(m); i++ {
-		part := ""
-		length := m[i]
-		if mode == 0 {
-			part = strings.Repeat(".", length)
-		} else {
-			part = strings.Repeat(strconv.Itoa(id), length)
+func parseInput(inputs string) Disk {
+	all := lib.ArrStrToInt(strings.Split(inputs, ""))
+	disk := Disk{}
+
+	for i := 0; i < len(all); i++ {
+		if i%2 == 1 {
+			continue
 		}
-		parts = append(parts, part)
-		if i%2 == 0 {
-			mode = 0
-		} else {
-			id++
-			mode = 1
+		id := i / 2
+		free := 0
+		if i < len(all)-1 {
+			free = all[i+1]
 		}
+		disk.addFile(File{
+			id:     id,
+			blocks: all[i],
+			free:   free,
+		})
 	}
-	fmt.Printf("%s\n", strings.Join(parts, ""))
+	return disk
 }
 
-func parseInput(inputs string) []int {
-	all := []int{}
-	for i := 0; i < len(inputs); i++ {
-		c, _ := strconv.Atoi(string(inputs[i]))
-		all = append(all, c)
-		// fmt.Printf("%d\n", c)
-	}
-	return all
+type File struct {
+	id     int
+	blocks int
+	free   int
 }
 
-func processInputPartOne(inputs string) {
+type Disk struct {
+	files []File
+}
 
+func (d *Disk) addFile(f File) {
+	d.files = append(d.files, f)
+}
+
+func (d *Disk) getFiles() []File {
+	return d.files
+}
+
+func (d *Disk) String() string {
+	str := ""
+	for _, file := range d.getFiles() {
+		str += strings.Repeat(strconv.Itoa(file.id), file.blocks)
+		str += strings.Repeat(".", file.free)
+	}
+	return str
 }

@@ -70,6 +70,15 @@ func ArrIntIndexOf(input []int, needle int) int {
 	return -1
 }
 
+func ArrStrIndexOf(input []string, needle string) int {
+	for i, v := range input {
+		if v == needle {
+			return i
+		}
+	}
+	return -1
+}
+
 func ArrIntSum(input []int) int {
 	return ArrIntReduce(input, func(v int, i int, acc int) int {
 		return acc + v
@@ -106,6 +115,14 @@ func ArrIntAbs(input []int) []int {
 	return ArrIntMap(input, func(v int, i int) int {
 		return int(math.Abs(float64(v)))
 	})
+}
+
+func ArrIntToStr(input []int) string {
+	ret := ""
+	for _, v := range input {
+		ret += strconv.Itoa(v)
+	}
+	return ret
 }
 
 func ArrStrToInt(input []string) []int {

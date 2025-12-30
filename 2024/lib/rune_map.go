@@ -168,3 +168,11 @@ func (r *StringMatrix) FindAll(query string) [][]int {
 	}
 	return found
 }
+
+func (r *StringMatrix) ForEach(fn func(x, y int, value string)) {
+	for y := 0; y < r.height; y++ {
+		for x := 0; x < r.width; x++ {
+			fn(x, y, r.Get(x, y))
+		}
+	}
+}
