@@ -131,6 +131,10 @@ func (s *SafeDial) IsZeroPosition() bool {
 func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 	s.lastPosition = s.position
 
+	if offset == 0 {
+		return s
+	}
+
 	switch direction {
 	case "L":
 		s.position = s.position - offset
@@ -150,7 +154,6 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 	}
 
 	if s.position == s.max {
-		// s.zeroCrossed++
 		s.position = 0
 	}
 
