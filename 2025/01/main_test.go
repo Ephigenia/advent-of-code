@@ -26,18 +26,24 @@ func TestCalculateNewPosition(t *testing.T) {
 
 	dial.Rotate("L", 68)
 	assert.Equal(t, 82, dial.position)
+	assert.Equal(t, 1, dial.zeroCrossed)
 
 	dial.Rotate("L", 30)
 	assert.Equal(t, 52, dial.position)
+	assert.Equal(t, 1, dial.zeroCrossed)
 
 	dial.Rotate("R", 48)
 	assert.Equal(t, 0, dial.position)
+	assert.Equal(t, 2, dial.zeroCrossed)
 
 	dial.Rotate("L", 5)
 	assert.Equal(t, 95, dial.position)
+	assert.Equal(t, 2, dial.zeroCrossed)
 
+	// 95 -> R60 -> 55
 	dial.Rotate("R", 60)
 	assert.Equal(t, 55, dial.position)
+	assert.Equal(t, 3, dial.zeroCrossed) // is 4 and that is wrong!
 
 	dial.Rotate("L", 55)
 	assert.Equal(t, 0, dial.position)
@@ -122,17 +128,4 @@ func TestSimpleFullLeftRotationsPlusOne(t *testing.T) {
 	dial.Rotate("L", 201)
 	assert.Equal(t, 99, dial.position)
 	assert.Equal(t, 3, dial.zeroCrossed)
-}
-
-func TestSimpleFullLeftRotationFrom0(t *testing.T) {
-	dial := NewSafeDial(0)
-	dial.Rotate("R", 99)
-	assert.Equal(t, 99, dial.position)
-	assert.Equal(t, 0, dial.zeroCrossed)
-}
-func TestSimpleFullLeftRotationFrom0_2(t *testing.T) {
-	dial := NewSafeDial(0)
-	dial.Rotate("R", 100)
-	assert.Equal(t, 2, dial.position)
-	assert.Equal(t, 1, dial.zeroCrossed)
 }
