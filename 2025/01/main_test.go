@@ -22,6 +22,7 @@ func TestConvertInputLineToItem(t *testing.T) {
 }
 
 func TestCalculateNewPosition(t *testing.T) {
+	// number of rotations according to the example
 	dial := NewSafeDial(50)
 
 	dial.Rotate("L", 68)

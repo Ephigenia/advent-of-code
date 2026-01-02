@@ -142,23 +142,16 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 
 	fullRotations := s.calculateTotalRotations(s.position)
 	if s.position == s.min {
-		s.zeroCrossed += int(fullRotations)
 		s.position = int(fullRotations)*s.max + s.position
 	} else if s.position < s.min {
-		s.zeroCrossed += int(fullRotations)
 		s.position = int(fullRotations)*s.max + s.position
 	} else if s.position > s.max {
-		s.zeroCrossed += int(fullRotations)
 		s.position = s.position - int(fullRotations)*s.max
 	}
 
 	if s.position == s.max {
 		// s.zeroCrossed++
 		s.position = 0
-		s.zeroCrossed++
-	}
-	if s.lastPosition == s.min {
-		s.zeroCrossed--
 	}
 
 	fmt.Printf(
