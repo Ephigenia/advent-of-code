@@ -98,6 +98,7 @@ func processInputPartTwo(input string) {
 	}
 	// 5958 is wrong
 	// 5541 is wrong
+	// 5740
 	// 4136 wrong
 	// 4932 wrong
 	// 2426 wrong
@@ -144,6 +145,8 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 		panic("invalid direction")
 	}
 
+	g := s.position
+
 	fullRotations := s.calculateTotalRotations(s.position)
 	if s.position == s.min {
 		s.position = int(fullRotations)*s.max + s.position
@@ -157,13 +160,22 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 		s.position = 0
 	}
 
+	s.zeroCrossed += int(math.Abs(fullRotations))
+	if s.lastPosition == s.min && fullRotations >= 1 {
+		s.zeroCrossed -= 1
+	}
+	if s.position == 0 && g == 0 {
+		s.zeroCrossed += 1
+	}
+
 	fmt.Printf(
-		"------> %-2d - %s-> %-2d, 0: %d, f: %d\n",
+		"------> %-2d - %s-> %-2d, 0: %d, f: %d  g: %d\n",
 		s.lastPosition,
 		fmt.Sprintf("%s%-3d", direction, offset),
 		s.position,
 		s.zeroCrossed,
 		int(fullRotations),
+		g,
 	)
 
 	s.lastPosition = s.position
