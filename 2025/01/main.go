@@ -13,6 +13,11 @@ import (
 	"github.com/Ephigenia/advent-of-code/2024/lib"
 )
 
+type InputItem struct {
+	direction string
+	offset    int
+}
+
 func main() {
 	pwd, _ := os.Getwd()
 	args := os.Args
@@ -53,6 +58,7 @@ func convertInputLineToItem(line string) []InputItem {
 	}
 }
 
+// correct is 1026
 func processInputPartOne(input string) {
 	lines := strings.Split(input, "\n")
 
@@ -134,7 +140,10 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 	}
 
 	fullRotations := s.calculateTotalRotations(s.position)
-	if s.position < s.min {
+	if s.position == s.min {
+		s.zeroCrossed += int(fullRotations)
+		s.position = int(fullRotations)*s.max + s.position
+	} else if s.position < s.min {
 		s.zeroCrossed += int(fullRotations)
 		s.position = int(fullRotations)*s.max + s.position
 	} else if s.position > s.max {
@@ -142,12 +151,22 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 		s.position = s.position - int(fullRotations)*s.max
 	}
 
-	fmt.Printf("Rotated %s%d: from %d to %d (full rotations: %.0f, zero crossed: %d)\n", direction, offset, s.lastPosition, s.position, fullRotations, s.zeroCrossed)
-
 	if s.position == s.max {
 		// s.zeroCrossed++
 		s.position = 0
+		s.zeroCrossed++
 	}
+
+	fmt.Printf(
+		"Rotated %s%d: from %d to %d (full rotations: %.0f, zero crossed: %d)\n",
+		direction,
+		offset,
+		s.lastPosition,
+		s.position,
+		fullRotations,
+		s.zeroCrossed,
+	)
+
 	return s
 }
 
