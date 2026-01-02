@@ -162,7 +162,7 @@ func (s *SafeDial) Rotate(direction string, offset int) *SafeDial {
 	}
 
 	fmt.Printf(
-		"------> %-2d - %s-> %-2d, 0: %d, %d\n",
+		"------> %-2d - %s-> %-2d, 0: %d, f: %d\n",
 		s.lastPosition,
 		fmt.Sprintf("%s%-3d", direction, offset),
 		s.position,

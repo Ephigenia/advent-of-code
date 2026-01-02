@@ -40,25 +40,30 @@ func TestCalculateNewPosition(t *testing.T) {
 	assert.Equal(t, 95, dial.position)
 	assert.Equal(t, 2, dial.zeroCrossed)
 
-	// 95 -> R60 -> 55
-	// dial.Rotate("R", 60)
-	// assert.Equal(t, 55, dial.position)
-	// assert.Equal(t, 3, dial.zeroCrossed) // is 4 and that is wrong!
+	dial.Rotate("R", 60)
+	assert.Equal(t, 55, dial.position)
+	assert.Equal(t, 3, dial.zeroCrossed)
 
-	// dial.Rotate("L", 55)
-	// assert.Equal(t, 0, dial.position)
+	// 55 to 0
+	dial.Rotate("L", 55)
+	assert.Equal(t, 0, dial.position)
+	assert.Equal(t, 4, dial.zeroCrossed)
 
-	// dial.Rotate("L", 1)
-	// assert.Equal(t, 99, dial.position)
+	dial.Rotate("L", 1)
+	assert.Equal(t, 99, dial.position)
+	assert.Equal(t, 4, dial.zeroCrossed)
 
-	// dial.Rotate("L", 99)
-	// assert.Equal(t, 0, dial.position)
+	dial.Rotate("L", 99)
+	assert.Equal(t, 0, dial.position)
+	assert.Equal(t, 5, dial.zeroCrossed)
 
-	// dial.Rotate("R", 14)
-	// assert.Equal(t, 14, dial.position)
+	dial.Rotate("R", 14)
+	assert.Equal(t, 14, dial.position)
+	assert.Equal(t, 5, dial.zeroCrossed)
 
-	// dial.Rotate("L", 82)
-	// assert.Equal(t, 32, dial.position)
+	dial.Rotate("L", 82)
+	assert.Equal(t, 32, dial.position)
+	assert.Equal(t, 6, dial.zeroCrossed)
 }
 
 func TestRotationWithZeroOffset(t *testing.T) {
